@@ -195,6 +195,14 @@ const DoctorDashboard = () => {
         handleBillPatient(patient)
       }
 
+      const bill_description = prompt(`Enter the amount you want to bill ${patient.first_name} ${patient.last_name}`)
+  
+      if (bill_description === null) {
+        alert("Cannot add a bill without a description, start again")
+
+        return; 
+      }
+
       const parsedAmount = parseFloat(bill_amount);
       if (isNaN(parsedAmount) || parsedAmount <= 0) {
           alert("Please enter a valid amount that is greater than zero.");
@@ -204,7 +212,8 @@ const DoctorDashboard = () => {
       const bill_data = {
         "patient_id": patient.id,
         "status": "Pending",
-        "amount": bill_amount
+        "amount": bill_amount,
+        "description": bill_description
       }
 
       const response = await fetch('http://localhost:5000/bills/', {

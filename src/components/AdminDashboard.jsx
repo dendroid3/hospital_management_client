@@ -267,7 +267,7 @@ const AdminDashboard = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:5000/doctors/', {
+      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/doctors/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -312,7 +312,7 @@ const AdminDashboard = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:5000/patients/', {
+      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/patients/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -351,7 +351,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch(`http://localhost:5000/doctors/${editValues.id}`, {
+      const response = await fetch(`https://hospital-management-api-1-8u27.onrender.com/doctors/${editValues.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -382,7 +382,7 @@ const AdminDashboard = () => {
         doctor_id: editPatientValues.doctor_id || (editPatientValues.doctor ? editPatientValues.doctor.id : 1) // Default to 1 if doctor is not found
       };
 
-      const response = await fetch(`http://localhost:5000/patients/${editPatientValues.id}`, {
+      const response = await fetch(`https://hospital-management-api-1-8u27.onrender.com/patients/${editPatientValues.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -411,7 +411,7 @@ const AdminDashboard = () => {
     if(!confirm(confirmation_message_to_delete)) return
 
     try {
-      const response = await fetch(`http://localhost:5000/doctors/${doctor.id}`, {
+      const response = await fetch(`https://hospital-management-api-1-8u27.onrender.com/doctors/${doctor.id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -438,7 +438,7 @@ const AdminDashboard = () => {
     if(!confirm(confirmation_message_to_delete)) return
 
     try {
-      const response = await fetch(`http://localhost:5000/patients/${patient.id}`, {
+      const response = await fetch(`https://hospital-management-api-1-8u27.onrender.com/patients/${patient.id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -573,7 +573,7 @@ useEffect(() => {
   // Function to be called on mount
   const fetchDoctors = async () => {
     try {
-      const response = await fetch('http://localhost:5000/doctors/', {
+      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/doctors/', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -593,7 +593,7 @@ useEffect(() => {
 
   const fetchPatients = async () => {
     try {
-      const response = await fetch('http://localhost:5000/patients/', {
+      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/patients/', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

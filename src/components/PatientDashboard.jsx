@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { FaBars, FaCalendarAlt, FaFileMedical, FaMoneyBill, FaSun, FaMoon } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-// Sample data for doctors and bills. This could come from an API in a real application.
 const sampleDoctors = [
   { id: 1, name: "Dr. Smith", service: "Consultation" },
   { id: 2, name: "Dr. Jones", service: "Check-up" },
@@ -18,12 +17,20 @@ const initialBills = [
 ];
 
 const PatientDashboard = () => {
+ /**
+ * Import Section
+ */
   const navigate = useNavigate(); // Initialize useNavigate
+
+  
+  /**
+ * DataSection
+ */
   const [showSidebar, setShowSidebar] = useState(false);
-  const [selectedAction, setSelectedAction] = useState("");
+  const [selectedAction, setSelectedAction] = useState("viewBills");
   const [selectedService, setSelectedService] = useState("");
   const [availableDoctors, setAvailableDoctors] = useState([]);
-  const [bills, setBills] = useState(initialBills);
+  const [bills, setBills] = useState([]);
   
   // State for theme
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -31,14 +38,70 @@ const PatientDashboard = () => {
     return localStorage.getItem('theme') === 'dark';
   });
 
-  useEffect(() => {
-    // Persist theme preference to local storage
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
 
+  /**
+ * Methods Section
+ */
   const handleToggleTheme = () => {
     setIsDarkMode(prevMode => !prevMode);
   };
+
+  const handlePayPill = async (bill) => {
+    try {
+      const phone_number = prompt(`Enter the MPesa number you want to pay ${bill.amount} through:`)
+  
+      if (phone_number === null) {
+        console.log("phone_number === null")
+        return; 
+      }
+      
+      if(phone_number == ""){
+        alert("You have not entered any phone number.")
+        console.log("phone_number === ''")
+
+        handlePayPill(bill)
+        return
+      }
+
+      console.log("phone_number.length", phone_number.length  )
+
+
+      const converted_phone_number = Number(phone_number);
+
+      console.log(converted_phone_number)
+
+      if (isNaN(converted_phone_number)) {
+        alert("Enter a valid Mpesa number.")
+        console.log("converted_phone_number")
+
+        handlePayPill(bill)
+          return null; // or handle the error as needed
+      }
+
+      if(phone_number.length < 9 || phone_number.length > 10){
+        alert("Enter a valid Mpesa number.")
+        console.log("phone_number.length < 9 || phone_number.length > 10")
+
+        handlePayPill(bill)
+        return
+      }
+
+      // Convert the number back to string for regex operation
+      const converted_phone_number_string = converted_phone_number.toString();
+
+      // Use regex to remove the first '0' if it exists at the beginning
+      const result_string = converted_phone_number_string.replace(/^0+/, '');
+
+      const payment_data = {
+        phone_number: `+254${result_string}`,
+        bill_id: bill.id
+      }
+      
+      console.log(payment_data)
+    } catch (error) {
+      
+    }
+  }
 
   const handleActionClick = (action) => {
     setSelectedAction(action);
@@ -60,10 +123,66 @@ const PatientDashboard = () => {
     const doctors = sampleDoctors.filter((doctor) => doctor.service === service);
     setAvailableDoctors(doctors);
   };
+  
+  const formatDate = (creation_date) => {
+    const date = new Date(creation_date)
 
-  const fetchBills = () => {
+    // Get the day with a suffix (e.g., "17th")
+    const day = date.getUTCDate();
+    const day_suffix = (day) => {
+      if (day > 3 && day < 21) return 'th'; 
+      switch (day % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+      }
+    };
+
+    const formatted_date = `${day}${day_suffix(day)} ${date.toLocaleString('en-US', {
+      month: 'long',  
+      year: 'numeric' 
+    })}`;
+
+    const date_of_day = formatted_date.split(" ")[0].slice(0, -2);
+    const date_of_day_suffix = formatted_date.split(" ")[0].slice(-2);
+    const rest_of_date = formatted_date.split(" ").slice(1).join(" ");
+
+     
+    const formatted_time = date.toLocaleString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+      timeZone: 'Africa/Nairobi' // East African Time (EAT)
+    });
+
+    return {
+      "date_of_day": date_of_day,
+      "date_of_day_suffix": date_of_day_suffix,
+      "rest_of_date": rest_of_date,
+      "formatted_time": formatted_time
+    }
+  }
+  const fetchMyBills = async () => {
     // Simulate fetching bills from an API
-    setBills(initialBills);
+    // setBills(initialBills);
+    try {
+      const response = await fetch('http://localhost:5000/patients/1/bills', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setBills(result)
+      } else {
+        throw new Error('Failed to fetch doctors.');
+      }
+    } catch (error) {
+      setMessage(`Error: ${error.message}`);
+    }
   };
 
   const handlePayment = (billId) => {
@@ -81,6 +200,21 @@ const PatientDashboard = () => {
     navigate("/"); // Redirect to landing page
   };
 
+  /**
+   * Mounted() Section
+   */
+  useEffect(() => {
+    // Persist theme preference to local storage
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
+
+  useEffect(() => {
+    fetchMyBills();
+  }, []);
+
+  /**
+   * HTML Section
+   */
   return (
     <div className={`min-h-screen flex flex-col relative ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}>
       {/* Navbar */}
@@ -189,23 +323,43 @@ const PatientDashboard = () => {
                   <div className="mt-4">
                     <h3 className="font-semibold">Your Bills</h3>
                     {bills.length > 0 ? (
-                      <ul className="mt-2">
+                    
+                    <table className="min-w-full bg-white dark:bg-gray-800">
+                      <thead>
+                        <tr className="bg-gray-200 dark:bg-gray-700">
+                          <th className="py-2 px-4 border-b text-left">Date</th>
+                          <th className="py-2 px-4 border-b text-left">Description</th>
+                          <th className="py-2 px-4 border-b text-left">Amount</th>
+                          <th className="py-2 px-4 border-b text-left">Status</th>
+                          <th className="py-2 px-4 border-b text-left">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
                         {bills.map((bill) => (
-                          <li key={bill.id} className={`flex justify-between text-${isDarkMode ? 'gray-300' : 'gray-600'} mb-1`}>
-                            <span>Date: {bill.date}</span>
-                            <span>Amount: ${bill.amount}</span>
-                            <span>Status: {bill.status}</span>
-                            {bill.status === "Pending" && (
+                          <tr key={bill.id} className={`border-b text-${isDarkMode ? 'gray-300' : 'gray-600'}`}>
+                            <td className="py-2 px-4">
+                              <span>  
+                                {formatDate(bill.creation_date).date_of_day}
+                                <sup>{formatDate(bill.creation_date).date_of_day_suffix}</sup> 
+                                &nbsp;
+                                {formatDate(bill.creation_date).rest_of_date}
+                              </span>  
+                            </td> {/* Assuming creation_date holds the date */}
+                            <td className="py-2 px-4">{bill.description}</td>
+                            <td className="py-2 px-4">${bill.amount.toFixed(2)}</td>
+                            <td className="py-2 px-4">{bill.status}</td>
+                            <td className="py-2 px-4">
                               <button
-                                className="bg-green-500 text-white px-2 py-1 rounded ml-4"
-                                onClick={() => handlePayment(bill.id)}
+                                className="bg-green-500 text-white px-2 py-1 rounded"
+                                onClick={() => handlePayPill(bill)}
                               >
                                 Pay
                               </button>
-                            )}
-                          </li>
+                            </td>
+                          </tr>
                         ))}
-                      </ul>
+                      </tbody>
+                    </table>
                     ) : (
                       <p className={`text-${isDarkMode ? 'gray-400' : 'gray-600'}`}>You have no bills at the moment.</p>
                     )}
