@@ -50,6 +50,22 @@ const DoctorDashboard = () => {
    */ 
   const navigate = useNavigate(); // Initialize useNavigate
 
+  useEffect(() => {
+    const user_role = localStorage.getItem('user_role');
+
+    if (!user_role) {
+      alert("You are not Logged In")
+      navigate('/'); 
+      return
+    }
+
+    if (user_role != 2) {
+      alert("Unauthorized")
+      navigate('/');  
+      return
+    }
+  }, [navigate]);
+
   /**
    * Data Section
    */ 
@@ -68,7 +84,7 @@ const DoctorDashboard = () => {
     subject: "Enter Subject..."
   })
 
-
+  const doctor_id = localStorage.getItem('user_id')
   /** 
     *Methods Section 
   **/
@@ -84,7 +100,7 @@ const DoctorDashboard = () => {
 
   const fetchMyPatients = async () => {
     try {
-      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/doctors/patients/1', {
+      const response = await fetch(`https://hospital-management-api-1-8u27.onrender.com/doctors/patients/${doctor_id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -104,7 +120,7 @@ const DoctorDashboard = () => {
 
   const fetchMyAppointments = async () => {
     try {
-      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/appointments/doctor/1', {
+      const response = await fetch(`https://hospital-management-api-1-8u27.onrender.com/appointments/doctor/${doctor_id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -127,7 +143,7 @@ const DoctorDashboard = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/appointments/1', {
+      const response = await fetch(`https://hospital-management-api-1-8u27.onrender.com/appointments/${doctor_id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

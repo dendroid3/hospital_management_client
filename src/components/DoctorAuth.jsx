@@ -9,7 +9,7 @@ const DoctorAuth = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log("Doctor Login:", { password, password });
+    console.log("Doctor Login:", { password });
     navigate('/doctor'); // Redirect to Doctor Dashboard
   };
 

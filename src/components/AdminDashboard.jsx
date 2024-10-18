@@ -54,6 +54,22 @@ const AdminDashboard = () => {
   const [isAddDoctorPromptOpen, setIsAddDoctorPromptOpen] = useState(false);
   const [isAddPatientPromptOpen, setIsAddPatientPromptOpen] = useState(false);
   
+  useEffect(() => {
+    const user_role = localStorage.getItem('user_role');
+
+    if (!user_role) {
+      alert("You are not Logged In")
+      navigate('/'); 
+      return
+    }
+
+    if (user_role != 1) {
+      alert("Unauthorized")
+      navigate('/');  
+      return
+    }
+  }, [navigate]);
+
   //Country codes:
   const countries = [
     { name: "Kenya", code: "+254", digits_length: 9 },

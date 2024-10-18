@@ -22,11 +22,11 @@ const PatientAuth = () => {
     navigate('/patient');
 
     if (isLogin) {
-      console.log("Patient Login:", { password, password });
+      console.log("Patient Login:", { password });
       // Redirect to Patient Dashboard after successful login
       navigate('/patient');
     } else {
-      console.log("Patient Signup:", { password, password, email });
+      console.log("Patient Signup:", { password, email });
       // Redirect to Patient Dashboard after signup
       navigate('/patient');
     }

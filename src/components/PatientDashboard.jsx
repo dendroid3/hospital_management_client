@@ -2,27 +2,28 @@ import React, { useState, useEffect } from "react";
 import { FaBars, FaCalendarAlt, FaFileMedical, FaMoneyBill, FaSun, FaMoon } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const sampleDoctors = [
-  { id: 1, name: "Dr. Smith", service: "Consultation" },
-  { id: 2, name: "Dr. Jones", service: "Check-up" },
-  { id: 3, name: "Dr. Brown", service: "Follow-Up" },
-  { id: 4, name: "Dr. White", service: "Consultation" },
-];
-
-// Sample data for bills
-const initialBills = [
-  { id: 1, date: "2024-10-01", amount: 150, status: "Pending" },
-  { id: 2, date: "2024-10-10", amount: 200, status: "Pending" },
-  { id: 3, date: "2024-10-15", amount: 75, status: "Paid" },
-];
-
 const PatientDashboard = () => {
  /**
  * Import Section
  */
   const navigate = useNavigate(); // Initialize useNavigate
 
-  
+  useEffect(() => {
+    const user_role = localStorage.getItem('user_role');
+
+    if (!user_role) {
+      alert("You are not Logged In")
+      navigate('/'); 
+      return
+    }
+
+    if (user_role != 3) {
+      alert("Unauthorized")
+      navigate('/');  
+      return
+    }
+  }, [navigate]);
+
   /**
  * DataSection
  */
@@ -31,6 +32,14 @@ const PatientDashboard = () => {
   const [selectedService, setSelectedService] = useState("");
   const [availableDoctors, setAvailableDoctors] = useState([]);
   const [bills, setBills] = useState([]);
+  const [records, setRecords] = useState(null)
+  const [doctors, setDoctors] = useState([]);
+  const [reasonForVisit, setReasonForVisit] = useState(null)
+  const [newAppointmentDetail, setNewAppointmentDetails] = useState({
+    cost: 500
+  })
+
+  const patient_id = localStorage.getItem('user_id')
   
   // State for theme
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -45,6 +54,52 @@ const PatientDashboard = () => {
   const handleToggleTheme = () => {
     setIsDarkMode(prevMode => !prevMode);
   };
+
+  const handleAddAppointment = async () => {
+    try {
+      const data = {
+        patient_id: 1,
+        doctor_id: newAppointmentDetail.doctor_id,
+        reason_for_visit: newAppointmentDetail.reason_for_visit,
+        cost: newAppointmentDetail.cost,
+        appointment_date: `${newAppointmentDetail.date} ${newAppointmentDetail.date}`
+      }
+
+      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/appointments/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setNewAppointmentDetails({
+          cost: 500
+        })
+        setTimeout(() => {
+          alert(result.message)
+        }, 0);
+        fetchMyBills()  
+        setSelectedAction("viewBills")
+
+      } else {
+        alert("Could not add appointment.")
+      }
+      
+    } catch (error){
+      console.log(error)
+    }
+  }
+
+  const handleNewAppointmentInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewAppointmentDetails(prevValues => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  }
 
   const handlePayPill = async (bill) => {
     try {
@@ -64,7 +119,6 @@ const PatientDashboard = () => {
       }
 
       console.log("phone_number.length", phone_number.length  )
-
 
       const converted_phone_number = Number(phone_number);
 
@@ -93,8 +147,25 @@ const PatientDashboard = () => {
       const result_string = converted_phone_number_string.replace(/^0+/, '');
 
       const payment_data = {
-        phone_number: `+254${result_string}`,
+        phone_number: `254${result_string}`,
         bill_id: bill.id
+      }
+      
+      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/transactions/deposit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payment_data)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        // setPatients(result)
+        console.log(result)
+        alert(result.message)
+      } else {
+        alert("Could not initiate transaction, try again later.")
       }
       
       console.log(payment_data)
@@ -106,17 +177,16 @@ const PatientDashboard = () => {
   const handleActionClick = (action) => {
     setSelectedAction(action);
     setShowSidebar(false); // Optionally hide the sidebar after selecting an action
-
-    // If the action is to view bills, fetch the bills
-    if (action === "viewBills") {
-      fetchBills();
-    }
   };
 
   const handleServiceChange = (service) => {
     setSelectedService(service);
     fetchAvailableDoctors(service);
   };
+
+  const handleReasonChange = (reason) => {
+    setReasonForVisit(reason)
+  }
 
   const fetchAvailableDoctors = (service) => {
     // Simulate fetching data from an API
@@ -163,11 +233,33 @@ const PatientDashboard = () => {
       "formatted_time": formatted_time
     }
   }
+
+  const fetchDoctors = async () => {
+    try {
+      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/doctors/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setDoctors(result)
+      } else {
+        throw new Error('Failed to fetch doctors.');
+      }
+    } catch (error) {
+      // setMessage(`Error: ${error.message}`);
+    }
+  };
+
+
   const fetchMyBills = async () => {
     // Simulate fetching bills from an API
     // setBills(initialBills);
     try {
-      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/patients/1/bills', {
+      const response = await fetch(`https://hospital-management-api-1-8u27.onrender.com/patients/${patient_id}/bills`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -185,14 +277,26 @@ const PatientDashboard = () => {
     }
   };
 
-  const handlePayment = (billId) => {
-    // Simulate payment processing
-    setBills((prevBills) =>
-      prevBills.map((bill) =>
-        bill.id === billId ? { ...bill, status: "Paid" } : bill
-      )
-    );
-    alert(`Bill ID ${billId} has been paid!`);
+  const fetchMyRecords = async () => {
+    // Simulate fetching bills from an API
+    // setBills(initialBills);
+    try {
+      const response = await fetch(`https://hospital-management-api-1-8u27.onrender.com/patients/${patient_id}/records`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setRecords(result)
+      } else {
+        throw new Error('Failed to fetch records.');
+      }
+    } catch (error) {
+      // setMessage(`Error: ${error.message}`);
+    }
   };
 
   const handleLogout = () => {
@@ -210,6 +314,8 @@ const PatientDashboard = () => {
 
   useEffect(() => {
     fetchMyBills();
+    fetchMyRecords();
+    fetchDoctors();
   }, []);
 
   /**
@@ -252,8 +358,8 @@ const PatientDashboard = () => {
         <div className={`absolute top-24 left-4 bg-${isDarkMode ? 'gray-800' : 'white'} p-4 rounded-lg shadow-lg z-20`}>
           <h3 className="font-bold text-lg mb-4">Options</h3>
           <ul>
-            <li onClick={() => handleActionClick("bookDoctor")} className={`cursor-pointer mb-2 text-${isDarkMode ? 'blue-400' : 'blue-600'} hover:underline`}>
-              <FaCalendarAlt className="inline mr-2" /> Book a Doctor
+            <li onClick={() => handleActionClick("bookAppointment")} className={`cursor-pointer mb-2 text-${isDarkMode ? 'blue-400' : 'blue-600'} hover:underline`}>
+              <FaCalendarAlt className="inline mr-2" /> Book Appointment
             </li>
             <li onClick={() => handleActionClick("viewRecords")} className={`cursor-pointer mb-2 text-${isDarkMode ? 'blue-400' : 'blue-600'} hover:underline`}>
               <FaFileMedical className="inline mr-2" /> View Health Records
@@ -307,16 +413,79 @@ const PatientDashboard = () => {
                         )}
                         <input type="date" className={`p-2 border rounded mb-2 w-full bg-${isDarkMode ? 'gray-600' : 'white'} text-${isDarkMode ? 'white' : 'black'}`} />
                         <input type="time" className={`p-2 border rounded mb-2 w-full bg-${isDarkMode ? 'gray-600' : 'white'} text-${isDarkMode ? 'white' : 'black'}`} />
-                        <button className={`bg-blue-600 text-white px-4 py-2 rounded-lg`}>Book Appointment</button>
+                        <button onClick={handleAddAppointment} className={`bg-blue-600 text-white px-4 py-2 rounded-lg`}>Book Appointment</button>
                       </>
                     )}
                   </div>
+                )} 
+                {selectedAction === "bookAppointment" && (
+                  <div className="mt-4">
+                    <h3 className="font-semibold">Book Appointment</h3>
+                    <select 
+                    onChange={handleNewAppointmentInputChange} 
+                    className={`p-2 border rounded mb-2 w-full bg-${isDarkMode ? 'gray-600' : 'white'} text-${isDarkMode ? 'white' : 'black'}`}
+                    name='reason_for_visit'
+                    >
+                      <option value="">Select Reason For Visit</option>
+                      <option value="Consultation">Consultation</option>
+                      <option value="Check-up">Check-up</option>
+                      <option value="Follow-Up">Follow-Up</option>
+                    </select>
+                    <select
+                      className={`mt-1 p-2 border border-gray-600 rounded w-full ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                      name="doctor_id"
+                      onChange={handleNewAppointmentInputChange} 
+                      required
+                    >
+                      <option value="">Select Specialist</option>
+   
+                      {doctors.map((doctor) => (
+                        <option key={doctor.id} value={doctor.id} className="bg-gray-800 text-white hover:text-green-500">
+                          {`${doctor.specialization} by ${doctor.title}. ${doctor.surname}, ${doctor.first_name} (${doctor.gender})`}
+                        </option>
+                      ))}
+                    </select>
+                    
+                    <input type="date" onChange={handleNewAppointmentInputChange}  name="date" className={`p-2 border rounded mb-2 w-full bg-${isDarkMode ? 'gray-600' : 'white'} text-${isDarkMode ? 'white' : 'black'}`} />
+                    <input type="time" onChange={handleNewAppointmentInputChange}  name="time" className={`p-2 border rounded mb-2 w-full bg-${isDarkMode ? 'gray-600' : 'white'} text-${isDarkMode ? 'white' : 'black'}`} />
+                    <button className={`bg-blue-600 text-white px-4 py-2 rounded-lg`} onClick={handleAddAppointment}>Book Appointment</button>
+                  </div>
                 )}
+
                 {selectedAction === "viewRecords" && (
                   <div className="mt-4">
                     <h3 className="font-semibold">Health Records</h3>
                     <p className={`text-${isDarkMode ? 'gray-400' : 'gray-800'}`}>Your medical history and previous consultations will appear here.</p>
-                    <button className={`bg-blue-600 text-white px-4 py-2 rounded-lg mt-4`}>View Detailed Records</button>
+                    {records.length > 0 ? (
+                    
+                      <table className="min-w-full bg-white dark:bg-gray-800">
+                        <thead>
+                          <tr className="bg-gray-200 dark:bg-gray-700">
+                            <th className="py-2 px-4 border-b text-left">Date</th>
+                            <th className="py-2 px-4 border-b text-left">Subject</th>
+                            <th className="py-2 px-4 border-b text-left">Record</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {records.map((record) => (
+                            <tr key={record.id} className={`border-b text-${isDarkMode ? 'gray-300' : 'gray-600'}`}>
+                              <td className="py-2 px-4">
+                                <span>  
+                                  {formatDate(record.creation_date).date_of_day}
+                                  <sup>{formatDate(record.creation_date).date_of_day_suffix}</sup> 
+                                  &nbsp;
+                                  {formatDate(record.creation_date).rest_of_date}
+                                </span>  
+                              </td>
+                              <td className="py-2 px-4">{record.subject}</td>
+                              <td className="py-2 px-4">{record.record}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    ) : (
+                      <p className={`text-${isDarkMode ? 'gray-400' : 'gray-600'}`}>You have no bills at the moment.</p>
+                    )}
                   </div>
                 )}
                 {selectedAction === "viewBills" && (
@@ -350,10 +519,11 @@ const PatientDashboard = () => {
                             <td className="py-2 px-4">{bill.status}</td>
                             <td className="py-2 px-4">
                               <button
-                                className="bg-green-500 text-white px-2 py-1 rounded"
+                                disabled={bill.status == "Paid"}
+                                className={`bg-${bill.status == "Paid" ? 'gray-300' : 'green-500'} text-white px-2 py-1 rounded`}
                                 onClick={() => handlePayPill(bill)}
                               >
-                                Pay
+                                {bill.status == "Paid" ? "Paid" : "Pay"}
                               </button>
                             </td>
                           </tr>
