@@ -406,14 +406,6 @@ const DoctorDashboard = () => {
             >
               <FaUserEdit className="inline mr-2" /> Edit Profile
             </li>
-            {/* <li
-              onClick={() => handleActionClick("billPatients")}
-              className={`cursor-pointer hover:underline ${
-                isDarkMode ? "text-blue-400" : "text-blue-700"
-              }`}
-            >
-              <FaMoneyBill className="inline mr-2" /> Bill Patients
-            </li> */}
           </ul>
         </div>
       )}
