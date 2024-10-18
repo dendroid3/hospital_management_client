@@ -49,169 +49,61 @@ const ScrollableWrapper = styled.div`
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [showSidebar, setShowSidebar] = useState(false);
-  const [selectedAction, setSelectedAction] = useState("viewDoctors");
+  const [selectedAction, setSelectedAction] = useState("viewPatients");
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isAddDoctorPromptOpen, setIsAddDoctorPromptOpen] = useState(false);
+  const [isAddPatientPromptOpen, setIsAddPatientPromptOpen] = useState(false);
   
-   //Country codes:
-    const countries = [
-      { name: "Kenya", code: "+254", digits_length: 9 },
-      { name: "South Africa", code: "+27", digits_length: 10 },
-      { name: "Egypt", code: "+20", digits_length: 9 },
-      { name: "Nigeria", code: "+234", digits_length: 10 },
-      { name: "Morocco", code: "+212", digits_length: 9 },
-      { name: "Ghana", code: "+233", digits_length: 9 },
-      { name: "Tunisia", code: "+216", digits_length: 8 },
-      { name: "Tanzania", code: "+255", digits_length: 9 },
-      { name: "Uganda", code: "+256", digits_length: 9 },
-      { name: "Rwanda", code: "+250", digits_length: 8 },
-      { name: "Germany", code: "+49", digits_length: 10 },
-      { name: "Sweden", code: "+46", digits_length: 9 },
-      { name: "Japan", code: "+81", digits_length: 10 },
-      { name: "Singapore", code: "+65", digits_length: 8 },
-      { name: "Switzerland", code: "+41", digits_length: 9 },
-      { name: "Australia", code: "+61", digits_length: 9 },
-      { name: "Canada", code: "+1", digits_length: 10 },
-      { name: "France", code: "+33", digits_length: 9 },
-      { name: "Norway", code: "+47", digits_length: 8 },
-      { name: "Netherlands", code: "+31", digits_length: 9 },
-      { name: "Finland", code: "+358", digits_length: 10 },
-      { name: "United Kingdom", code: "+44", digits_length: 10 },
-      { name: "New Zealand", code: "+64", digits_length: 9 },
-      { name: "Belgium", code: "+32", digits_length: 8 },
-      { name: "Austria", code: "+43", digits_length: 10 },
-      { name: "Denmark", code: "+45", digits_length: 8 },
-      { name: "Italy", code: "+39", digits_length: 10 },
-      { name: "Iceland", code: "+354", digits_length: 7 },
-      { name: "United States", code: "+1", digits_length: 10 },
-      { name: "Spain", code: "+34", digits_length: 9 },
-      { name: "Israel", code: "+972", digits_length: 9 },
-      { name: "South Korea", code: "+82", digits_length: 9 },
-      { name: "United Arab Emirates", code: "+971", digits_length: 9 },
-    ];
-  // Sample data for doctors and their patients with billing information
-  const [doctors, setDoctors] = useState([
-    {
-      id: 1,
-      title: "Dr",
-      first_name: "John",
-      surname: "Smith",
-      gender: "Male",
-      date_of_birth: "21/05/1975",
-      specialization: "Gynacologist",
-      phone_number_country_code: "+39", // Randomly selected country code (e.g., Kenya)
-      phone_number: "7977272523",
-      email: "john.smith@example.com",
-      address: "101, Maisha Hostel, Nyeri",
-      years_of_experience: 23,
-      qualifications: [
-        "Doctor of Medicine (MD) in Obstetrics and Gynecology",
-        "Fellowship in Gynecology and Obstetrics (FGO)",
-        "Diplomate of National Board (DNB) in Obstetrics and Gynecology",
-        "Certified in Laparoscopic Surgery"
-      ],
-      start_of_employment: "12/10/2024",
-      emergency_contact: "703571509",
-      emergency_contact_country_code: "+254", // Randomly selected country code (e.g., Kenya)
-      patients: [
-        { id: 1, name: "John Doe", age: 30, bill: 150, paid: true },
-        { id: 2, name: "Jane Doe", age: 25, bill: 200, paid: false },
-        { id: 3, name: "Jane Doe", age: 25, bill: 200, paid: false },
-        { id: 4, name: "Jane Doe", age: 25, bill: 200, paid: false },
-      ],
-    },
-    {
-      id: 2,
-      title: "Dr",
-      first_name: "James",
-      surname: "Quincy",
-      gender: "Male",
-      date_of_birth: "01/01/1980",
-      specialization: "Optician",
-      phone_number_country_code: "+43", // Randomly selected country code (e.g., Kenya)
-      phone_number: "3722965500",
-      email: "james.quicy@example.com",
-      address: "52336, Muhito Plaza, Nyeri",
-      years_of_experience: 13,
-      qualifications: [
-        "Bachelor of Medicine, Bachelor of Surgery (MBBS)",
-        "Doctor of Medicine (MD) in Obstetrics and Gynecology",
-        "Fellowship in Gynecology and Obstetrics (FGO)",
-        "Member of the Royal College of Obstetricians and Gynaecologists (MRCOG)",
-        "Diplomate of National Board (DNB) in Obstetrics and Gynecology",
-        "Certified in Laparoscopic Surgery"
-      ],
-      start_of_employment: "05/07/2019",
-      emergency_contact: "1725639450",
-      emergency_contact_country_code: "+27", // Randomly selected country code (e.g., South Africa)
-      patients: [
-        { id: 1, name: "John Doe", age: 30, bill: 150, paid: true },
-        { id: 2, name: "Jane Doe", age: 25, bill: 200, paid: false },
-        { id: 3, name: "Jane Doe", age: 25, bill: 200, paid: false },
-        { id: 4, name: "Jane Doe", age: 25, bill: 200, paid: false },
-        { id: 5, name: "Jane Doe", age: 25, bill: 200, paid: false },
-        { id: 6, name: "Jane Doe", age: 25, bill: 200, paid: false },
-      ],
-    },
-    {
-      id: 3,
-      title: "Dr",
-      first_name: "Julie",
-      surname: "Lentin",
-      gender: "Female",
-      date_of_birth: "17/09/1995",
-      specialization: "Orthopidic",
-      phone_number_country_code: "+972", // Randomly selected country code (e.g., Kenya)
-      phone_number: "752630089",
-      email: "l_julie@example.com",
-      address: "85, Cointelle Part, Nyeri",
-      years_of_experience: 3,
-      qualifications: [
-        "Bachelor of Medicine, Bachelor of Surgery (MBBS)",
-        "Certified in Orthopidic Surgery"
-      ],
-      start_of_employment: "03/12/2023",
-      emergency_contact: "721598304",
-      emergency_contact_country_code: "+20", // Randomly selected country code (e.g., Egypt)
-      patients: [
-        { id: 1, name: "John Doe", age: 30, bill: 150, paid: true },
-        { id: 2, name: "John Doe", age: 30, bill: 150, paid: true },
-        { id: 3, name: "Jane Doe", age: 25, bill: 200, paid: false },
-      ],
-    },
-  ]);
+  //Country codes:
+  const countries = [
+    { name: "Kenya", code: "+254", digits_length: 9 },
+    { name: "South Africa", code: "+27", digits_length: 10 },
+    { name: "Egypt", code: "+20", digits_length: 9 },
+    { name: "Nigeria", code: "+234", digits_length: 10 },
+    { name: "Morocco", code: "+212", digits_length: 9 },
+    { name: "Ghana", code: "+233", digits_length: 9 },
+    { name: "Tunisia", code: "+216", digits_length: 8 },
+    { name: "Tanzania", code: "+255", digits_length: 9 },
+    { name: "Uganda", code: "+256", digits_length: 9 },
+    { name: "Rwanda", code: "+250", digits_length: 8 },
+    { name: "Germany", code: "+49", digits_length: 10 },
+    { name: "Sweden", code: "+46", digits_length: 9 },
+    { name: "Japan", code: "+81", digits_length: 10 },
+    { name: "Singapore", code: "+65", digits_length: 8 },
+    { name: "Switzerland", code: "+41", digits_length: 9 },
+    { name: "Australia", code: "+61", digits_length: 9 },
+    { name: "Canada", code: "+1", digits_length: 10 },
+    { name: "France", code: "+33", digits_length: 9 },
+    { name: "Norway", code: "+47", digits_length: 8 },
+    { name: "Netherlands", code: "+31", digits_length: 9 },
+    { name: "Finland", code: "+358", digits_length: 10 },
+    { name: "United Kingdom", code: "+44", digits_length: 10 },
+    { name: "New Zealand", code: "+64", digits_length: 9 },
+    { name: "Belgium", code: "+32", digits_length: 8 },
+    { name: "Austria", code: "+43", digits_length: 10 },
+    { name: "Denmark", code: "+45", digits_length: 8 },
+    { name: "Italy", code: "+39", digits_length: 10 },
+    { name: "Iceland", code: "+354", digits_length: 7 },
+    { name: "United States", code: "+1", digits_length: 10 },
+    { name: "Spain", code: "+34", digits_length: 9 },
+    { name: "Israel", code: "+972", digits_length: 9 },
+    { name: "South Korea", code: "+82", digits_length: 9 },
+    { name: "United Arab Emirates", code: "+971", digits_length: 9 },
+  ];
 
-  const [selectedDoctorToEdit, setSelectedDoctorToEdit] = useState({
-    id: 1,
-    title: "Dr",
-    first_name: "John",
-    surname: "Smith",
-    gender: "Male",
-    date_of_birth: "21/05/1975",
-    specialization: "Gynacologist",
-    phone_number_country_code: "+39", // Randomly selected country code (e.g., Kenya)
-    phone_number: "7977272523",
-    email: "john.smith@example.com",
-    address: "101, Maisha Hostel, Nyeri",
-    years_of_experience: 23,
-    qualifications: [
-      "Doctor of Medicine (MD) in Obstetrics and Gynecology",
-      "Fellowship in Gynecology and Obstetrics (FGO)",
-      "Diplomate of National Board (DNB) in Obstetrics and Gynecology",
-      "Certified in Laparoscopic Surgery"
-    ],
-    start_of_employment: "12/10/2024",
-    emergency_contact: "703571509",
-    emergency_contact_country_code: "+254", // Randomly selected country code (e.g., Kenya)
-    patients: [
-      { id: 1, name: "John Doe", age: 30, bill: 150, paid: true },
-      { id: 2, name: "Jane Doe", age: 25, bill: 200, paid: false },
-      { id: 3, name: "Jane Doe", age: 25, bill: 200, paid: false },
-      { id: 4, name: "Jane Doe", age: 25, bill: 200, paid: false },
-    ],
-  });
+  
+  const [patients, setPatients] = useState([]);
+
+  const [doctors, setDoctors] = useState([]);
+
+  const [selectedDoctorToEdit, setSelectedDoctorToEdit] = useState(null);
+
+  const [selectedPatientToEdit, setSelectedPatientToEdit] = useState(null);
 
   const [isEditDoctorPromptOpen, setIsEditDoctorPromptOpen] = useState(false);
+
+  const [isEditPatientPromptOpen, setIsEditPatientPromptOpen] = useState(false);
+
 
   const [doctorDetails, setDoctorDetails] = useState({
     title: '',
@@ -228,7 +120,20 @@ const AdminDashboard = () => {
     address: '',
     years_of_experience: '',
   });
-  const [qualifications, setQualifications] = useState(['']);
+
+  const [newPatientDetails, setNewPatientDetails] = useState({
+    "first_name": "",
+    "last_name": "",
+    "date_of_birth": "",
+    "gender": "",
+    "phone_number": "",
+    "email": "",
+    "address": "",
+    "doctor_id": "",
+    "emergency_contact_phone_number": "" 
+  })
+
+  const [qualifications, setQualifications] = useState(['']); 
 
   const [specialization_options, setSpecializationOptions] = useState([
     { id: 1, title: "Cardiologist" },
@@ -258,6 +163,11 @@ const AdminDashboard = () => {
     setDoctorDetails({ ...doctorDetails, [name]: value });
   };
 
+  const handleNewPatientInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewPatientDetails({ ...newPatientDetails, [name]: value });
+  };
+
   // Toggle between light and dark mode
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -281,17 +191,39 @@ const AdminDashboard = () => {
     setIsAddDoctorPromptOpen(bool)
   };
 
+  const toogleAddPatientPrompt = (bool) => {
+    setIsAddPatientPromptOpen(bool)
+  };
+
   const toogleEditDoctorPrompt = (doctor) => {
     if(doctor){
       setSelectedDoctorToEdit(doctor)
     }
     setIsEditDoctorPromptOpen(doctor)
-  }
+  };
 
-  const initialiseDeletingDoctor = (doctor) => {
-    const confirmation_message_to_delete = `You are about to delete ${doctor.title}. ${doctor.surname}, ${doctor.first_name}`
-    confirm(confirmation_message_to_delete)
+  const toogleEditPatientPrompt = (patient) => {
+    if(patient){
+      setSelectedPatientToEdit(patient)
+    }
+    setIsEditPatientPromptOpen(patient)
   }
+  
+  useEffect(() => {
+    if (selectedDoctorToEdit) {
+      setEditValues(selectedDoctorToEdit)
+    }
+  }, [selectedDoctorToEdit]);
+
+  useEffect(() => {
+    if (selectedPatientToEdit) {
+      setEditPatientValues(selectedPatientToEdit)
+    }
+  }, [selectedPatientToEdit]);
+
+  const [editValues, setEditValues] = useState({ ...selectedDoctorToEdit });
+
+  const [editPatientValues, setEditPatientValues] = useState({ ...selectedPatientToEdit });
 
   const handleEditDoctorInputChange = (e) => {
     const { name, value } = e.target;
@@ -306,7 +238,14 @@ const AdminDashboard = () => {
     }));
   };
 
-  const [editValues, setEditValues] = useState({ ...selectedDoctorToEdit });
+  const handleEditPatientInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditPatientValues(prevValues => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
 
   const handleLogout = () => {
     navigate("/"); // Redirect to landing page
@@ -323,37 +262,203 @@ const AdminDashboard = () => {
     const new_doctor = {
       ...restOfDoctorDetails,
       qualifications: validQualifications,
-      id: doctors.length + 1,
       phone_number_country_code: doctorDetails.country_code.code,
       emergency_contact_country_code: doctorDetails.emergency_country_code.code
     };
 
-    console.log(new_doctor)
+    try {
+      const response = await fetch('http://localhost:5000/doctors/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(new_doctor)
+      });
 
-    // Update the doctors array with the new doctor
-    setDoctors((prev_doctors) => [...prev_doctors, new_doctor]);
+      if (response.ok) {
+        fetchDoctors()
+        toogleAddDoctorPrompt(false)
 
-    const defaultCountry = countries.find(country => country.name === 'Kenya');
+        setDoctorDetails({
+          title: '',
+          first_name: '',
+          surname: '',
+          gender: '',
+          date_of_birth: '',
+          specialization: '',
+          emergency_contact: '',
+          country_code: countries.find(country => country.code === '+254'),
+          emergency_country_code: countries.find(country => country.code === '+254'),
+          phone_number: '',
+          email: '',
+          address: '',
+          years_of_experience: '',
+        });
 
-    // Reset the form fields
-    setDoctorDetails({
-      title: '',
-      first_name: '',
-      surname: '',
-      gender: '',
-      date_of_birth: '',
-      specialization: '',
-      country_code: defaultCountry || countries[0],
-      phone_number: '',
-      email: '',
-      address: '',
-      years_of_experience: '',
-      start_of_employment: '',
-      emergency_country_code:   defaultCountry || countries[0],
-      emergency_contact: '',
-    });
-    setQualifications(['']); // Reset qualifications to an empty input
+        setTimeout(() => {
+          alert("Doctor added successfully")
+        }, 0);
+      } else {
+        alert("Could not add doctor")
+      }
+    } catch (error) {
+      alert(error)
+    }
+
+    setQualifications(['']);
   };
+
+  const handleAddPatient = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:5000/patients/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newPatientDetails)
+      });
+
+      if (response.ok) {
+        fetchPatients()
+        toogleAddPatientPrompt(false)
+        
+        setNewPatientDetails({
+          "first_name": "",
+          "last_name": "",
+          "date_of_birth": "",
+          "gender": "",
+          "phone_number": "",
+          "email": "",
+          "address": "",
+          "doctor_id": "",
+          "emergency_contact_phone_number": "" 
+        })
+
+        setTimeout(() => {
+          alert("Patient added successfully")
+        }, 0);
+      } else {
+        alert("Could not add patient")
+      }
+    } catch (error) {
+      alert(error)
+    }
+  };
+
+  const handleEditDoctor = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const response = await fetch(`http://localhost:5000/doctors/${editValues.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editValues)
+      });
+
+      if (response.ok) {
+        fetchDoctors()
+        toogleEditDoctorPrompt(false)
+        setTimeout(() => {
+          alert("Doctor edited successfully")
+        }, 0);
+      } else {
+        alert("Could not edit doctor")
+      }
+    } catch (error) {
+      alert(error)
+    }
+  };
+
+  const handleEditPatient = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const updatedValues = {
+        ...editPatientValues,
+        doctor_id: editPatientValues.doctor_id || (editPatientValues.doctor ? editPatientValues.doctor.id : 1) // Default to 1 if doctor is not found
+      };
+
+      const response = await fetch(`http://localhost:5000/patients/${editPatientValues.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedValues)
+      });
+
+      if (response.ok) {
+        fetchPatients()
+        // toogleEditPatientPrompt(false)
+        setTimeout(() => {
+          alert("Patient edited successfully")
+        }, 0);
+      } else {
+        alert("Could not edit patient")
+      }
+    } catch (error) {
+      alert(error)
+    }
+  };
+
+  
+  const handleDeleteDoctor = async (doctor) => {
+    const confirmation_message_to_delete = `You are about to delete ${doctor.title}. ${doctor.surname}, ${doctor.first_name}`
+
+    if(!confirm(confirmation_message_to_delete)) return
+
+    try {
+      const response = await fetch(`http://localhost:5000/doctors/${doctor.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+
+      if (response.ok) {
+        fetchDoctors()
+        setTimeout(() => {
+          alert("Doctor deleted successfully")
+        }, 0);
+      } else {
+        alert("Could not delete doctor")
+      }
+    } catch (error) {
+      alert(error)
+    }
+  }
+
+  const handleDeletePatient = async (patient) => {
+    const confirmation_message_to_delete = `You are about to delete  ${patient.first_name} ${patient.last_name} (${patient.gender}).\nAll their records will be deleted. Proceed?`
+
+    if(!confirm(confirmation_message_to_delete)) return
+
+    try {
+      const response = await fetch(`http://localhost:5000/patients/${patient.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+
+      if (response.ok) {
+        fetchPatients()
+
+        setTimeout(() => {
+          alert("Patient deleted successfully")
+        }, 0);
+      } else {
+        alert("Could not delete pa")
+      }
+    } catch (error) {
+      alert(error)
+    }
+  }
 
   const validateForm = () => {
     const { title, first_name, surname, gender, date_of_birth, phone_number, email, emergency_contact, specialization, address, years_of_experience, start_of_employment } = doctorDetails;
@@ -407,11 +512,11 @@ const isExperienceValid = isAddressValid && doctorDetails.years_of_experience.tr
 const isStartEmploymentValid = isExperienceValid && doctorDetails.years_of_experience.trim().length > 0;
 // const isQualificationsValid = qualifications.every(q => q.trim().length >= 10 || q === ''); // Check each qualification
 
-const isEditTitleValid = editValues.title.trim().length > 0;
-const isEditFirstNameValid = editValues.first_name.trim().length > 2;
-const isEditSurnameValid = isEditFirstNameValid && editValues.surname.trim().length > 2;
-const isEditGenderValid = isEditSurnameValid && editValues.gender.trim().length > 0;
-const isEditDateOfBirthValid = isEditGenderValid && editValues.date_of_birth.length > 0;
+const isEditTitleValid = editValues.title ? editValues.title.trim().length > 0 : false;
+const isEditFirstNameValid = editValues.first_name ? editValues.first_name.trim().length > 2 : false;
+const isEditSurnameValid = editValues.surname ? isEditFirstNameValid && editValues.surname.trim().length > 2 : false;
+const isEditGenderValid = editValues.gender ? isEditSurnameValid && editValues.gender.trim().length > 0 : false;
+const isEditDateOfBirthValid = editValues.date_of_birth ? isEditGenderValid && editValues.date_of_birth.length > 0 : false;
 
 const jsonString = JSON.stringify(editValues);
 
@@ -465,6 +570,53 @@ useEffect(() => {
   };
 }, [isAddDoctorPromptOpen]);
   
+  // Function to be called on mount
+  const fetchDoctors = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/doctors/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setDoctors(result)
+      } else {
+        throw new Error('Failed to fetch doctors.');
+      }
+    } catch (error) {
+      // setMessage(`Error: ${error.message}`);
+    }
+  };
+
+  const fetchPatients = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/patients/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setPatients(result)
+      } else {
+        throw new Error('Failed to fetch doctors.');
+      }
+    } catch (error) {
+      // setMessage(`Error: ${error.message}`);
+    }
+  };
+
+  // useEffect to call fetchData on component mount
+  useEffect(() => {
+    fetchDoctors();
+    fetchPatients();
+  }, []); // Empty dependency array means this effect runs once after initial render
+
   return (
     <div className={`min-h-screen flex flex-col relative transition-colors duration-300 ${isDarkMode ? 'bg-gradient-to-r from-gray-800 to-black' : 'bg-gray-200'}`}>
       {/* Navbar */}
@@ -510,22 +662,168 @@ useEffect(() => {
             {selectedAction ? (
               <>
                 <h2 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                  Selected Action: {selectedAction.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()).replace(/\b\w/g, str => str.toUpperCase())}
+                  {selectedAction.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()).replace(/\b\w/g, str => str.toUpperCase()).split(" ")[1]}
                 </h2>
                 <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                   You selected to {selectedAction.replace(/([A-Z])/g, ' $1').toLowerCase()}.
                 </p>
-                {selectedAction === "viewDoctors" && (
-                  <div className="mt-2">
-                    <button onClick={() => toogleAddDoctorPrompt(true)} className="bg-green-600 text-white px-4 py-2 rounded-lg mx-1">
-                      Add Doctor  
-                    </button>
-                  </div>
-                )}
 
                 {/* Implement functionality for each action */}
                 {selectedAction === "viewDoctors" && (
                   <div>
+                    <div className="my-2">
+                      <button onClick={() => toogleAddDoctorPrompt(true)} className="bg-green-600 text-white px-4 py-2 rounded-lg mx-1">
+                        Add Doctor  
+                      </button>
+                    </div>
+
+                    <div className="bg-slate-500 p-2">
+                      <div className="mt-4">
+                        <ul className="mt-2">
+                          {doctors.map((doctor) => (
+                            <li key={doctor.id} className="mb-4 bg-slate-700 p-2 rounded">
+
+                              <h4 className={`${isDarkMode ? 'text-white' : 'text-gray-900'} font-bold`}>
+                                {`${doctor.id}: ${doctor.title}. ${doctor.surname}, ${doctor.first_name} (${doctor.gender})`}
+                              </h4>
+
+                              <ul>
+                                  <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                    <span className="font-bold">
+                                      {`Date of Birth: `}
+                                    </span>
+                                    <span>
+                                      {`${doctor.date_of_birth} (50)`}
+                                    </span>
+                                  </li>
+                              </ul>
+
+                              <ul>
+                                  <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                    <span className="font-bold">
+                                      {`Phone Number: `}
+                                    </span>
+                                    <span>
+                                      {`${doctor.phone_number_country_code} ${doctor.phone_number}`}
+                                    </span>
+                                  </li>
+                              </ul>
+
+                              <ul>
+                                  <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                    <span className="font-bold">
+                                      {`Email: `}
+                                    </span>
+                                    <span>
+                                      {`${doctor.email}`}
+                                    </span>
+                                  </li>
+                              </ul>
+
+                              <ul>
+                                  <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                    <span className="font-bold">
+                                      {`Emergency Contact: `}
+                                    </span>
+                                    <span>
+                                      {`${doctor.emergency_contact_country_code} ${doctor.emergency_contact}`}
+                                    </span>
+                                  </li>
+                              </ul>
+
+                              <ul>
+                                  <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                    <span className="font-bold">
+                                      {`Specialization: `}
+                                    </span>
+                                    <span>
+                                      {`${doctor.specialization}`}
+                                    </span>
+                                  </li>
+                              </ul>
+
+                              <ul>
+                                  <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                    <span className="font-bold">
+                                      {`Address: `}
+                                    </span>
+                                    <span>
+                                      {`${doctor.address}`}
+                                    </span>
+                                  </li>
+                              </ul>
+
+                              <ul>
+                                  <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                    <span className="font-bold">
+                                      {`Experience: `}
+                                    </span>
+                                    <span>
+                                      {`${doctor.years_of_experience}`}
+                                    </span>
+                                  </li>
+                              </ul>
+
+                              <ul>
+                                  <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                    <span className="font-bold">
+                                      {`Start of Employment: `}
+                                    </span>
+                                    <span>
+                                      {`${doctor.start_of_employment}`}
+                                    </span>
+                                  </li>
+                              </ul>
+
+                              <ul>
+                                <p className={`${isDarkMode ? 'text-gray-300 font-bold' : 'text-gray-700 font-bold'}`}>
+                                  {`Qualifications:`}
+                                </p>
+                                <div className="mx-4 bg-slate-900 p-2 rounded">
+                                  {doctor.qualifications.map((qualification, index) => (
+                                    <li key={index} className={`${isDarkMode ? 'text-white' : 'text-white'}`}>
+                                      {qualification}
+                                    </li>
+                                  ))}
+                                </div>
+                              </ul>
+                                <ul>
+                                  <p className={`${isDarkMode ? 'text-gray-300 font-bold' : 'text-gray-700 font-bold'}`}>
+                                    {`Patients:`}
+                                  </p>
+                                  <div className="mx-4 bg-slate-900 p-2 rounded">
+                                    {doctor.patients && (
+                                      
+                                      <div>
+                                        {doctor.patients.map((patient) => (
+                                          <li key={patient.id} className={`${isDarkMode ? 'text-white' : 'text-white'}`}>
+                                            {patient.name} (Age: {patient.age}) - Bill: ${patient.bill} - Status: {patient.paid ? "Paid" : "Unpaid"}
+                                          </li>
+                                        ))}
+                                      </div>
+                                    
+                                  )}
+
+                                  {!doctor.patients && (
+                                    <li className={`${isDarkMode ? 'text-white' : 'text-white'}`}>
+                                      {`No Patients Available.`}
+                                    </li>
+                                  )}
+                                  </div>
+                                </ul>
+
+                                <ul>
+                                  <li className={`${isDarkMode ? 'text-gray-300 ml-4 mt-4' : 'text-gray-700 ml-4 mt-4'}`}>
+                                    <button className="bg-blue-600 text-white px-4 py-2 rounded-lg mx-1"  onClick={() => toogleEditDoctorPrompt(doctor)} >Edit Doctor</button>
+                                    <button className="bg-red-600 text-white px-4 py-2 rounded-lg mx-1" onClick={() => handleDeleteDoctor(doctor)} >Delete Doctor</button>
+                                  </li>
+                              </ul>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
                     {/* Ender add doc prompt */}
                     {isAddDoctorPromptOpen && (
                     <div className="fixed inset-x-0 top-5 bottom-5 flex items-center justify-center z-50">
@@ -539,7 +837,7 @@ useEffect(() => {
                         </div>
                         <ScrollableWrapper className="bg-white rounded">
                         
-                          <StyledForm className="bg-white p-6 rounded shadow-md mt-6" onSubmit={handleAddDoctor}>
+                          <StyledForm className="bg-white p-6 text rounded shadow-md mt-6" onSubmit={handleAddDoctor}>
                             <div>
                               <div>
                                 <label className="block mb-0">Title:</label>
@@ -605,9 +903,7 @@ useEffect(() => {
                               </div>
 
                               <div>
-                                {/* <label className="block mt-3 mb-0">Date of Birth:</label> */}
                                 <label className="block mt-3 mb-0">Date of Birth:</label>
-
                                 <input
                                   className={
                                     `mt-1 p-2 border border-gray-600 rounded w-full 
@@ -839,7 +1135,7 @@ useEffect(() => {
                           </div>
                          </div>
                           <ScrollableWrapper className="bg-white rounded">
-                            <StyledForm className="bg-white p-6 rounded shadow-md mt-6" onSubmit={handleAddDoctor}>
+                            <StyledForm className="bg-white p-6 rounded shadow-md mt-6" onSubmit={handleEditDoctor}>
                               <div>
                                 <div>
                                   <label className="block mb-0">Title:</label>
@@ -1091,23 +1387,294 @@ useEffect(() => {
                                   />
                                 </div>
 
+                                <div className="fixed bottom-10 left-0 right-0 flex justify-center">
+                                  <button
+                                    type="submit"
+                                    className={`p-2 rounded bg-green-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-200`}
+                                  >
+                                    Submit
+                                  </button>
+                                </div>
+                              </div>
+                            </StyledForm>
+                          
+                          </ScrollableWrapper>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {selectedAction === "viewPatients" && 
+                (
+                  <div>
+                    <div className="my-2">
+                      <button onClick={() => toogleAddPatientPrompt(true)} className="bg-green-600 text-white px-4 py-2 rounded-lg mx-1">
+                        Add Patient  
+                      </button>
+                    </div>
+
+                    <div className="bg-slate-500 p-2">
+                      <div className="mt-4">
+                        <ul className="mt-2">
+                          {patients.map((patient) => (
+                            <li key={patient.id} className="mb-4 bg-slate-700 p-2 rounded">
+                              <h4 className={`${isDarkMode ? 'text-white' : 'text-gray-900'} font-bold`}>
+                                {`${patient.id}: ${patient.first_name} ${patient.last_name} (${patient.gender})`}
+
+                              </h4>
+                              
+                              <ul>
+                                <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                  <span className="font-bold">
+                                    {`DOB: `}
+                                  </span>
+                                  <span>
+                                    {`${patient.date_of_birth}`}
+                                  </span>
+                                </li>
+                              </ul>
+                              <ul>
+                                <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                  <span className="font-bold">
+                                    {`Address: `}
+                                  </span>
+                                  <span>
+                                    {`${patient.address}`}
+                                  </span>
+                                </li>
+                              </ul>
+                              <ul>
+                                <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                  <span className="font-bold">
+                                    {`Phone Number: `}
+                                  </span>
+                                  <span>
+                                    {`${patient.phone_number}`}
+                                  </span>
+                                </li>
+                              </ul>
+                              <ul>
+                                <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                  <span className="font-bold">
+                                    {`Email: `}
+                                  </span>
+                                  <span>
+                                    {`${patient.email}`}
+                                  </span>
+                                </li>
+                              </ul>
+                              <ul>
+                                <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                  <span className="font-bold">
+                                    {`Emergency Contact: `}
+                                  </span>
+                                  <span>
+                                    {`${patient.emergency_contact_phone_number}`}
+                                  </span>
+                                </li>
+                              </ul>
+                              <ul>
+                                <p className={`${isDarkMode ? 'text-gray-300 font-bold' : 'text-gray-700 font-bold'}`}>
+                                  {`Doctor:`}
+                                </p>
+                                <div className="mx-4 bg-slate-900 p-2 rounded">
+                                  <ul>
+                                    {Object.entries(patient.doctor).map(([key, value], index) => (
+                                      <li key={index} className={`${isDarkMode ? 'text-white' : 'text-black'}`}>
+                                         {key !== "id" && 
+                                        (
+                                          <span>
+                                            {`${key}: ${value}`}
+                                          </span>
+                                        )}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              </ul>
+                              <ul>
+                                <li className={`${isDarkMode ? 'text-gray-300 ml-4 mt-4' : 'text-gray-700 ml-4 mt-4'}`}>
+                                  <button className="bg-blue-600 text-white px-4 py-2 rounded-lg mx-1"  onClick={() => toogleEditPatientPrompt(patient)} >Edit Patient</button>
+                                  <button className="bg-red-600 text-white px-4 py-2 rounded-lg mx-1" onClick={() => handleDeletePatient(patient)()} >Delete Patient</button>
+                                </li>
+                              </ul>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Ender add doc prompt */}
+                    {isAddPatientPromptOpen && (
+                      <div className="fixed inset-x-0 top-5 bottom-5 flex items-center justify-center z-50">
+                        <div className="bg-slate-600 rounded-lg p-6 shadow-lg w-11/12 max-w-lg h-full overflow-y-auto relative">
+                          <div>
+                            <h1 className="absolute top-4 text-3xl mb-4 text-white">{`Add Patient`}</h1>
+
+                            <div className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center cursor-pointer" onClick={() => toogleAddPatientPrompt(false)}>
+                              &times; {/* This is the "X" symbol */}
+                            </div>
+                          </div>
+                          <ScrollableWrapper className="bg-white rounded">
+                          
+                            <StyledForm className="bg-white p-6 text rounded shadow-md mt-6" onSubmit={handleAddPatient}>
+                              <div>
                                 <div>
-                                  <label className="block mt-3 mb-2">Qualifications:</label>
-                                  {editValues.qualifications.map((qualification, index) => (
+                                  <label className="block mb-0">First Name:</label>
+                                  <input
+                                    className={`mt-1 p-2 border border-gray-600 rounded w-full ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                    type="text"
+                                    name="first_name"
+                                    value={newPatientDetails.first_name}
+                                    onChange={handleNewPatientInputChange}
+                                    required
+                                  />
+                                </div>
+
+                                <div>
+                                  <label className="block mt-3 mb-0">Last Name:</label>
+                                  <input
+                                    className={`mt-1 p-2 border border-gray-600 rounded w-full ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                    type="text"
+                                    name="last_name"
+                                    value={newPatientDetails.last_name}
+                                    onChange={handleNewPatientInputChange}
+                                    required
+                                  />
+                                </div>
+
+                                <div>
+                                </div>
+                                <div>
+                                  <label className="block mt-3 mb-0">Gender:</label>
+                                  <select
+                                    className={`mt-1 p-2 border border-gray-600 rounded w-full ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                    name="gender"
+                                    value={newPatientDetails.gender}
+                                    onChange={handleNewPatientInputChange}
+                                    required
+                                  >
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                  </select>
+                                </div>
+
+                                <div>
+                                  <label className="block mt-3 mb-0">Date of Birth:</label>
+                                  <input
+                                    className={`mt-1 p-2 border border-gray-600 rounded w-full ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                    type="date"
+                                    name="date_of_birth"
+                                    value={newPatientDetails.date_of_birth}
+                                    onChange={handleNewPatientInputChange}
+                                    required
+                                  />
+                                </div>
+
+                                <div>
+                                  <label className="block mt-3 mb-0"> Phone Number: </label>
+                                  <div className="flex items-center mt-1">
+                                    <select
+                                      className={`mt-1 p-2 border border-gray-600 rounded w-1/5 ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                      onChange={(e) => {
+                                        const selectedCountry = countries.find(country => country.code === e.target.value);
+                                        setDoctorDetails(prevDetails => ({ ...prevDetails, country_code: selectedCountry }));
+                                      }}
+                                      disabled
+                                      value="`+254`"
+                                    >
+                                      {countries.map((country) => (
+                                        <option key={country.name} value={country.code} className="bg-gray-800 text-white hover:text-green-500">
+                                          {country.code} {country.name} 
+                                        </option>
+                                      ))}
+                                    </select>
                                     <input
-                                      className={
-                                        `mt-1 p-2 border border-gray-600 rounded w-full 
-                                        // ${1==2 ? 'bg-gray-500 text-gray-500' : (isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black')} 
-                                        focus:border-blue-500 focus:ring focus:ring-blue-200`
-                                      }
-                                      key={index}
-                                      type="text"
-                                      value={qualification}
-                                      // onChange={(e) => handleQualificationChange(index, e.target.value)}
-                                      // onBlur={() => handleQualificationBlur(index)} 
-                                      // disabled={!isEditStartEmploymentValid || (index > 0 && qualifications[index - 1].length < 10)} // Disable if not valid or previous qualification is invalid
+                                      className={`mt-1 p-2 border border-gray-600 rounded w-4/5 ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                      type="number"
+                                      name="phone_number"
+                                      value={newPatientDetails.phone_number}
+                                      onChange={handleNewPatientInputChange}
+                                      required
                                     />
-                                  ))}
+                                  </div>
+                                </div>
+
+                                <div>
+                                  <label className="block mt-3 mb-0">Email:</label>
+                                  <input
+                                    className={`mt-1 p-2 border border-gray-600 rounded w-full ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                    type="email"
+                                    name="email"
+                                    value={newPatientDetails.email}
+                                    onChange={handleNewPatientInputChange}
+                                    required
+                                  />
+                                </div>
+
+                                <div>
+                                  <label className="block mt-3 mb-0">Emergency Contact:</label>
+                                  <p>
+                                    {/* {doctorDetails.emergency_country_code.code} */}
+                                  </p>
+                                  <div className="flex items-center mt-1">
+                                    <select
+                                      className={`mt-1 p-2 border border-gray-600 rounded w-1/5 ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                      onChange={(e) => {
+                                        const selectedEmergencyCountry = countries.find(country => country.code === e.target.value);
+                                        setDoctorDetails(prevDetails => ({ ...prevDetails, emergency_country_code: selectedEmergencyCountry }));
+                                      }}
+                                      disabled
+                                      value="`+254`"
+                                    >
+                                      {countries.map((country) => (
+                                        <option key={country.name} value={country.code} className="bg-gray-800 text-white hover:text-green-500">
+                                          {country.code} {country.name} 
+                                        </option>
+                                      ))}
+                                    </select>
+                                    <input
+                                      className={`mt-1 p-2 border border-gray-600 rounded w-4/5 ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                      type="number"
+                                      name="emergency_contact_phone_number"
+                                      value={newPatientDetails.emergency_contact_phone_number}
+                                      onChange={handleNewPatientInputChange}
+                                      required
+                                    />
+                                  </div>
+                                </div>
+
+                                <div>
+                                  <label className="block mt-3 mb-0">Address:</label>
+                                  <input
+                                    className={`mt-1 p-2 border border-gray-600 rounded w-full ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                    type="text"
+                                    name="address"
+                                    value={newPatientDetails.address}
+                                    onChange={handleNewPatientInputChange}
+                                    required
+                                  />
+                                </div>
+
+                                <div>
+                                  <label className="block mt-3 mb-0">Assign Doctor:</label>
+                                  <select
+                                    className={`mt-1 p-2 border border-gray-600 rounded w-full ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                    name="doctor_id"
+                                    value={newPatientDetails.doctor_id}
+                                    onChange={handleNewPatientInputChange}
+                                    required
+                                  >
+                                    <option value="">Assign Doctor</option>
+                                      {doctors.map((doctor) => (
+                                        <option key={doctor.id} value={doctor.id} className="bg-gray-800 text-white hover:text-green-500">
+                                          {`${doctor.id}: ${doctor.title}. ${doctor.surname}, ${doctor.first_name} (${doctor.gender})`}
+                                        </option>
+                                      ))}
+                                  </select>
                                 </div>
 
                                 <div className="fixed bottom-10 left-0 right-0 flex justify-center">
@@ -1126,177 +1693,199 @@ useEffect(() => {
                       </div>
                     )}
 
-                    <h3 className={`${isDarkMode ? 'my-2 text-white' : 'my-2 text-gray-900'} font-semibold`}>Doctors</h3>
+                    {isEditPatientPromptOpen && (
+                      <div className="fixed inset-x-0 top-5 bottom-5 flex items-center justify-center z-50">
+                        <div className="bg-slate-600 rounded-lg p-6 shadow-lg w-11/12 max-w-lg h-full overflow-y-auto relative">
+                         {/* Close button */}
+                         <div>
+                          <h1 className="absolute top-4 text-3xl mb-4 text-white">{`Edit ${selectedPatientToEdit.id}: ${selectedPatientToEdit.first_name} ${selectedPatientToEdit.last_name}`}</h1>
 
-                    <div className="bg-slate-500 p-2">
-                      <div className="mt-4">
-                        <ul className="mt-2">
-                          {doctors.map((doctor) => (
-                            <li key={doctor.id} className="mb-4 bg-slate-700 p-2 rounded">
-
-                              <h4 className={`${isDarkMode ? 'text-white' : 'text-gray-900'} font-bold`}>
-                                {`${doctor.id}: ${doctor.title}. ${doctor.surname}, ${doctor.first_name} (${doctor.gender})`}
-                              </h4>
-
-                              <ul>
-                                  <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                                    <span className="font-bold">
-                                      {`Date of Birth: `}
-                                    </span>
-                                    <span>
-                                      {`${doctor.date_of_birth} (50)`}
-                                    </span>
-                                  </li>
-                              </ul>
-
-                              <ul>
-                                  <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                                    <span className="font-bold">
-                                      {`Phone Number: `}
-                                    </span>
-                                    <span>
-                                      {`${doctor.phone_number_country_code} ${doctor.phone_number}`}
-                                    </span>
-                                  </li>
-                              </ul>
-
-                              <ul>
-                                  <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                                    <span className="font-bold">
-                                      {`Email: `}
-                                    </span>
-                                    <span>
-                                      {`${doctor.email}`}
-                                    </span>
-                                  </li>
-                              </ul>
-
-                              <ul>
-                                  <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                                    <span className="font-bold">
-                                      {`Emergency Contact: `}
-                                    </span>
-                                    <span>
-                                      {`${doctor.emergency_contact_country_code} ${doctor.emergency_contact}`}
-                                    </span>
-                                  </li>
-                              </ul>
-
-                              <ul>
-                                  <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                                    <span className="font-bold">
-                                      {`Specialization: `}
-                                    </span>
-                                    <span>
-                                      {`${doctor.specialization}`}
-                                    </span>
-                                  </li>
-                              </ul>
-
-                              <ul>
-                                  <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                                    <span className="font-bold">
-                                      {`Address: `}
-                                    </span>
-                                    <span>
-                                      {`${doctor.address}`}
-                                    </span>
-                                  </li>
-                              </ul>
-
-                              <ul>
-                                  <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                                    <span className="font-bold">
-                                      {`Experience: `}
-                                    </span>
-                                    <span>
-                                      {`${doctor.years_of_experience}`}
-                                    </span>
-                                  </li>
-                              </ul>
-
-                              <ul>
-                                  <li className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                                    <span className="font-bold">
-                                      {`Start of Employment: `}
-                                    </span>
-                                    <span>
-                                      {`${doctor.start_of_employment}`}
-                                    </span>
-                                  </li>
-                              </ul>
-
-                              <ul>
-                                <p className={`${isDarkMode ? 'text-gray-300 font-bold' : 'text-gray-700 font-bold'}`}>
-                                  {`Qualifications:`}
-                                </p>
-                                <div className="ml-4 bg-slate-900 p-2 rounded">
-                                  {doctor.qualifications.map((qualification, index) => (
-                                    <li key={index} className={`${isDarkMode ? 'text-white' : 'text-white'}`}>
-                                      {qualification}
-                                    </li>
-                                  ))}
-                                </div>
-                              </ul>
-                                <ul>
-                                  <p className={`${isDarkMode ? 'text-gray-300 font-bold' : 'text-gray-700 font-bold'}`}>
-                                    {`Patients:`}
-                                  </p>
-                                  <div className="ml-4 bg-slate-900 p-2 rounded">
-                                    {doctor.patients && (
-                                      
-                                      <div>
-                                        {doctor.patients.map((patient) => (
-                                          <li key={patient.id} className={`${isDarkMode ? 'text-white' : 'text-white'}`}>
-                                            {patient.name} (Age: {patient.age}) - Bill: ${patient.bill} - Status: {patient.paid ? "Paid" : "Unpaid"}
-                                          </li>
-                                        ))}
-                                      </div>
-                                    
-                                  )}
-
-                                  {!doctor.patients && (
-                                    <li className={`${isDarkMode ? 'text-white' : 'text-white'}`}>
-                                      {`No Patients Available.`}
-                                    </li>
-                                  )}
-X
+                          <div className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center cursor-pointer" onClick={() => toogleEditPatientPrompt(false)}>
+                            &times; {/* This is the "X" symbol */}
+                          </div>
+                         </div>
+                          <ScrollableWrapper className="bg-white rounded">
+                            <StyledForm className="bg-white p-6 rounded shadow-md mt-6" onSubmit={handleEditPatient}>
+                              <div>
+                                  <div>
+                                    <label className="block mb-0">First Name:</label>
+                                    <input
+                                      className={`mt-1 p-2 border border-gray-600 rounded w-full ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                      type="text"
+                                      name="first_name"
+                                      value={editPatientValues.first_name}
+                                      onChange={handleEditPatientInputChange}
+                                      required
+                                    />
                                   </div>
-                                </ul>
 
-                              <ul>
-                                  <li className={`${isDarkMode ? 'text-gray-300 ml-4 mt-4' : 'text-gray-700 ml-4 mt-4'}`}>
-                                    <button className="bg-blue-600 text-white px-4 py-2 rounded-lg mx-1"  onClick={() => toogleEditDoctorPrompt(doctor)()} >Edit Doctor</button>
-                                    <button className="bg-red-600 text-white px-4 py-2 rounded-lg mx-1" onClick={() => initialiseDeletingDoctor(doctor)()} >Delete Doctor</button>
-                                  </li>
-                              </ul>
-                            </li>
-                          ))}
-                        </ul>
+                                  <div>
+                                    <label className="block mt-3 mb-0">Last Name:</label>
+                                    <input
+                                      className={`mt-1 p-2 border border-gray-600 rounded w-full ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                      type="text"
+                                      name="last_name"
+                                      value={editPatientValues.last_name}
+                                      onChange={handleEditPatientInputChange}
+                                      required
+                                    />
+                                  </div>
+
+                                  <div>
+                                  </div>
+                                  <div>
+                                    <label className="block mt-3 mb-0">Gender:</label>
+                                    <select
+                                      className={`mt-1 p-2 border border-gray-600 rounded w-full ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                      name="gender"
+                                      value={editPatientValues.gender}
+                                      onChange={handleEditPatientInputChange}
+                                      required
+                                    >
+                                      <option value="">Select Gender</option>
+                                      <option value="male">Male</option>
+                                      <option value="female">Female</option>
+                                      <option value="other">Other</option>
+                                    </select>
+                                  </div>
+
+                                  <div>
+                                    <label className="block mt-3 mb-0">Date of Birth:</label>
+                                    <input
+                                      className={`mt-1 p-2 border border-gray-600 rounded w-full ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                      type="date"
+                                      name="date_of_birth"
+                                      value={editPatientValues.date_of_birth}
+                                      onChange={handleEditPatientInputChange}
+                                      required
+                                    />
+                                  </div>
+
+                                  <div>
+                                    <label className="block mt-3 mb-0"> Phone Number: </label>
+                                    <div className="flex items-center mt-1">
+                                      <select
+                                        className={`mt-1 p-2 border border-gray-600 rounded w-1/5 ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                        onChange={(e) => {
+                                          const selectedCountry = countries.find(country => country.code === e.target.value);
+                                          setDoctorDetails(prevDetails => ({ ...prevDetails, country_code: selectedCountry }));
+                                        }}
+                                        disabled
+                                        value="`+254`"
+                                      >
+                                        {countries.map((country) => (
+                                          <option key={country.name} value={country.code} className="bg-gray-800 text-white hover:text-green-500">
+                                            {country.code} {country.name} 
+                                          </option>
+                                        ))}
+                                      </select>
+                                      <input
+                                        className={`mt-1 p-2 border border-gray-600 rounded w-4/5 ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                        type="number"
+                                        name="phone_number"
+                                        value={editPatientValues.phone_number}
+                                        onChange={handleEditPatientInputChange}
+                                        placeholder={`${doctorDetails.country_code.digits_length} digits`}
+                                        required
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div>
+                                    <label className="block mt-3 mb-0">Email:</label>
+                                    <input
+                                      className={`mt-1 p-2 border border-gray-600 rounded w-full ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                      type="email"
+                                      name="email"
+                                      value={editPatientValues.email}
+                                      onChange={handleEditPatientInputChange}
+                                      required
+                                    />
+                                  </div>
+
+                                  <div>
+                                    <label className="block mt-3 mb-0">Emergency Contact:</label>
+                                    <p>
+                                      {/* {doctorDetails.emergency_country_code.code} */}
+                                    </p>
+                                    <div className="flex items-center mt-1">
+                                      <select
+                                        className={`mt-1 p-2 border border-gray-600 rounded w-1/5 ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                        onChange={(e) => {
+                                          const selectedEmergencyCountry = countries.find(country => country.code === e.target.value);
+                                          setDoctorDetails(prevDetails => ({ ...prevDetails, emergency_country_code: selectedEmergencyCountry }));
+                                        }}
+                                        disabled
+                                        value="`+254`"
+                                      >
+                                        {countries.map((country) => (
+                                          <option key={country.name} value={country.code} className="bg-gray-800 text-white hover:text-green-500">
+                                            {country.code} {country.name} 
+                                          </option>
+                                        ))}
+                                      </select>
+                                      <input
+                                        className={`mt-1 p-2 border border-gray-600 rounded w-4/5 ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                        type="number"
+                                        name="emergency_contact_phone_number"
+                                        value={editPatientValues.emergency_contact_phone_number}
+                                        onChange={handleEditPatientInputChange}
+                                        placeholder={`${doctorDetails.emergency_country_code.digits_length} digits`}
+                                        required
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div>
+                                    <label className="block mt-3 mb-0">Address:</label>
+                                    <input
+                                      className={`mt-1 p-2 border border-gray-600 rounded w-full ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                      type="text"
+                                      name="address"
+                                      value={editPatientValues.address}
+                                      onChange={handleEditPatientInputChange}
+                                      required
+                                    />
+                                  </div>
+
+                                  <div>
+                                    <label className="block mt-3 mb-0">Assign Doctor:</label>
+                                    <select
+                                      className={`mt-1 p-2 border border-gray-600 rounded w-full ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}
+                                      name="doctor_id"
+                                      // value={editPatientValues.doctor_id}
+                                      // value={editPatientValues.doctor_id || (doctors.find(doc => doc.id === editPatientValues.doctor.id)?.id || '')}
+                                      value={editPatientValues.doctor_id || (editPatientValues.doctor && doctors.find(doc => doc.id === editPatientValues.doctor.id)?.id) || ''}
+                                      onChange={handleEditPatientInputChange}
+                                      required
+                                    >
+                                      <option value="">Assign Doctor</option>
+                                        {doctors.map((doctor) => (
+                                          <option key={doctor.id} value={doctor.id} className="bg-gray-800 text-white hover:text-green-500">
+                                            {`${doctor.id}: ${doctor.title}. ${doctor.surname}, ${doctor.first_name} (${doctor.gender})`}
+                                          </option>
+                                        ))}
+                                    </select>
+                                  </div>
+
+                                  <div className="fixed bottom-10 left-0 right-0 flex justify-center">
+                                    <button
+                                      type="submit"
+                                      className={`p-2 rounded bg-green-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-200`}
+                                    >
+                                      Submit
+                                    </button>
+                                  </div>
+                              </div>
+                            </StyledForm>
+                          
+                          </ScrollableWrapper>
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
-                )}
-
-                {selectedAction === "viewPatients" && (
-                  <div className="mt-4">
-                    <h3 className={`${isDarkMode ? 'text-white' : 'text-gray-900'} font-semibold`}>Patient List by Doctor</h3>
-                    <ul className="mt-2">
-                      {doctors.map((doctor) => (
-                        <li key={doctor.id} className="mb-4">
-                          <h4 className={`${isDarkMode ? 'text-white' : 'text-gray-900'} font-bold`}>{doctor.name}</h4>
-                          <ul>
-                            {doctor.patients.map((patient) => (
-                              <li key={patient.id} className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                                {patient.name} (Age: {patient.age}) - Bill: ${patient.bill} - Status: {patient.paid ? "Paid" : "Unpaid"}
-                              </li>
-                            ))}
-                          </ul>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                )
+                }
               </>
             ) : (
               <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Please select an option from the menu.</p>

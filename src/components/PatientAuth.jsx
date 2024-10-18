@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const PatientAuth = () => {
   const [isLogin, setIsLogin] = useState(true); // Toggle between login and signup
-  const [username, setUsername] = useState('');
+  // const [password, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -20,11 +20,11 @@ const PatientAuth = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isLogin) {
-      console.log("Patient Login:", { username, password });
+      console.log("Patient Login:", { password, password });
       // Redirect to Patient Dashboard after successful login
       navigate('/patient');
     } else {
-      console.log("Patient Signup:", { username, password, email });
+      console.log("Patient Signup:", { password, password, email });
       // Redirect to Patient Dashboard after signup
       navigate('/patient');
     }
@@ -49,10 +49,10 @@ const PatientAuth = () => {
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className={`${isDarkMode ? 'text-gray-400' : 'text-gray-800'}`}>Username</label>
+            <label className={`${isDarkMode ? 'text-gray-400' : 'text-gray-800'}`}>password</label>
             <input
               type="text"
-              value={username}
+              value={password}
               onChange={(e) => setUsername(e.target.value)}
               required
               className={`mt-1 p-2 border border-gray-600 rounded w-full ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} focus:border-blue-500 focus:ring focus:ring-blue-200`}

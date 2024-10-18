@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 const AdminAuth = () => {
   const [isLogin, setIsLogin] = useState(true); // Toggle between login and signup
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(true); // State for dark mode
@@ -23,17 +22,49 @@ const AdminAuth = () => {
     }
   }, [isDarkMode]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isLogin) {
-      console.log("Admin Login:", { username, password });
-      // Redirect to Admin Dashboard after successful login
-      navigate('/admin');
-    } else {
-      console.log("Admin Signup:", { username, password, email });
-      // Redirect to Admin Dashboard after signup
-      navigate('/admin');
+
+    console.log("email " +  email)
+    console.log("password" + password)
+
+    const login_data = {
+      "email": email,
+      "password": password
     }
+
+    console.log(login_data)
+    try {
+      const response = await fetch('http://localhost:5000/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(login_data)
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result)
+        // setDoctors(result)
+      } else {
+        alert("Could not login")
+      }
+    } catch (error) {
+      alert("Could not login")
+    }
+
+    // if (isLogin) {
+    //   console.log("Admin Login:", { password, password });
+    //   // Redirect to Admin Dashboard after successful login
+    //   navigate('/admin');
+    // } else {
+    //   console.log("Admin Signup:", { password, password, email });
+    //   // Redirect to Admin Dashboard after signup
+    //   navigate('/admin');
+    // }
   };
 
   return (
@@ -56,11 +87,11 @@ const AdminAuth = () => {
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className={`${isDarkMode ? 'text-gray-300' : 'text-gray-900'}`}>Username</label>
+            <label className={`${isDarkMode ? 'text-gray-300' : 'text-gray-900'}`}>Email</label>
             <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
               className={`mt-1 p-2 border rounded w-full ${isDarkMode ? 'bg-gray-700 text-white border-gray-600 focus:border-blue-500 focus:ring-blue-500' : 'bg-gray-200 text-gray-900 border-gray-400 focus:border-blue-500 focus:ring-blue-500'}`}
             />
@@ -93,15 +124,6 @@ const AdminAuth = () => {
           >
             {isLogin ? "Login" : "Sign Up"}
           </button>
-          <div className="mt-4 text-center">
-            <button
-              type="button"
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-blue-400 hover:underline"
-            >
-              {isLogin ? "Switch to Sign Up" : "Switch to Login"}
-            </button>
-          </div>
         </form>
       </div>
     </div>
