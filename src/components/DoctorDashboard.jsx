@@ -84,7 +84,7 @@ const DoctorDashboard = () => {
 
   const fetchMyPatients = async () => {
     try {
-      const response = await fetch('http://localhost:5000/doctors/patients/1', {
+      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/doctors/patients/1', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ const DoctorDashboard = () => {
 
   const fetchMyAppointments = async () => {
     try {
-      const response = await fetch('http://localhost:5000/appointments/doctor/1', {
+      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/appointments/doctor/1', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ const DoctorDashboard = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:5000/appointments/1', {
+      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/appointments/1', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -158,7 +158,7 @@ const DoctorDashboard = () => {
     record_data.patient_id = patientGettingRecordAdded.id
     console.log("recordToBeAdded", record_data)
     try {
-      const response = await fetch('http://localhost:5000/records/', {
+      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/records/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -216,7 +216,7 @@ const DoctorDashboard = () => {
         "description": bill_description
       }
 
-      const response = await fetch('http://localhost:5000/bills/', {
+      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/bills/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -167,7 +167,7 @@ const PatientDashboard = () => {
     // Simulate fetching bills from an API
     // setBills(initialBills);
     try {
-      const response = await fetch('http://localhost:5000/patients/1/bills', {
+      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/patients/1/bills', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

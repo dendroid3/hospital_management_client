@@ -19,6 +19,8 @@ const PatientAuth = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    navigate('/patient');
+
     if (isLogin) {
       console.log("Patient Login:", { password, password });
       // Redirect to Patient Dashboard after successful login

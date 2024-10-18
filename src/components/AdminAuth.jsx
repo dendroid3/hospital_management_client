@@ -34,32 +34,32 @@ const AdminAuth = () => {
     }
 
     console.log(login_data)
-    try {
-      const response = await fetch('http://localhost:5000/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(login_data)
-      });
+    // try {
+    //   const response = await fetch('http://localhost:5000/auth/login', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(login_data)
+    //   });
 
-      const result = await response.json();
+    //   const result = await response.json();
 
-      if (response.ok) {
-        const result = await response.json();
-        console.log(result)
-        // setDoctors(result)
-      } else {
-        alert("Could not login")
-      }
-    } catch (error) {
-      alert("Could not login")
-    }
+    //   if (response.ok) {
+    //     const result = await response.json();
+    //     console.log(result)
+    //     // setDoctors(result)
+    //   } else {
+    //     alert("Could not login")
+    //   }
+    // } catch (error) {
+    //   alert("Could not login")
+    // }
 
     // if (isLogin) {
     //   console.log("Admin Login:", { password, password });
     //   // Redirect to Admin Dashboard after successful login
-    //   navigate('/admin');
+      navigate('/admin');
     // } else {
     //   console.log("Admin Signup:", { password, password, email });
     //   // Redirect to Admin Dashboard after signup
