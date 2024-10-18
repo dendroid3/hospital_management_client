@@ -195,7 +195,7 @@ const DoctorDashboard = () => {
         handleBillPatient(patient)
       }
 
-      const bill_description = prompt(`Enter the amount you want to bill ${patient.first_name} ${patient.last_name}`)
+      const bill_description = prompt(`Enter the bill's description`)
   
       if (bill_description === null) {
         alert("Cannot add a bill without a description, start again")
