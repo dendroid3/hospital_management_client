@@ -283,7 +283,7 @@ const AdminDashboard = () => {
     };
 
     try {
-      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/doctors/', {
+      const response = await fetch('https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app//doctors/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -328,7 +328,7 @@ const AdminDashboard = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/patients/', {
+      const response = await fetch('https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app//patients/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -367,7 +367,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch(`https://hospital-management-api-1-8u27.onrender.com/doctors/${editValues.id}`, {
+      const response = await fetch(`https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app//doctors/${editValues.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -398,7 +398,7 @@ const AdminDashboard = () => {
         doctor_id: editPatientValues.doctor_id || (editPatientValues.doctor ? editPatientValues.doctor.id : 1) // Default to 1 if doctor is not found
       };
 
-      const response = await fetch(`https://hospital-management-api-1-8u27.onrender.com/patients/${editPatientValues.id}`, {
+      const response = await fetch(`https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app//patients/${editPatientValues.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -427,7 +427,7 @@ const AdminDashboard = () => {
     if(!confirm(confirmation_message_to_delete)) return
 
     try {
-      const response = await fetch(`https://hospital-management-api-1-8u27.onrender.com/doctors/${doctor.id}`, {
+      const response = await fetch(`https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app//doctors/${doctor.id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -454,7 +454,7 @@ const AdminDashboard = () => {
     if(!confirm(confirmation_message_to_delete)) return
 
     try {
-      const response = await fetch(`https://hospital-management-api-1-8u27.onrender.com/patients/${patient.id}`, {
+      const response = await fetch(`https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app//patients/${patient.id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -589,7 +589,7 @@ useEffect(() => {
   // Function to be called on mount
   const fetchDoctors = async () => {
     try {
-      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/doctors/', {
+      const response = await fetch('https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app//doctors/', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -609,7 +609,7 @@ useEffect(() => {
 
   const fetchPatients = async () => {
     try {
-      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/patients/', {
+      const response = await fetch('https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app//patients/', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

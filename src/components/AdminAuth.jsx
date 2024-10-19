@@ -50,7 +50,7 @@ const AdminAuth = () => {
 
       console.log(login_data)
       
-      const url = isLogin ? 'https://hospital-management-api-1-8u27.onrender.com/auth/login' : 'https://hospital-management-api-1-8u27.onrender.com/auth/register'
+      const url = isLogin ? 'https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app//auth/login' : 'https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app//auth/register'
       const response = await fetch(url, {
         method: 'POST',
         headers: {

@@ -65,7 +65,7 @@ const PatientDashboard = () => {
         appointment_date: `${newAppointmentDetail.date} ${newAppointmentDetail.date}`
       }
 
-      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/appointments/', {
+      const response = await fetch('https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app//appointments/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ const PatientDashboard = () => {
         bill_id: bill.id
       }
       
-      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/transactions/deposit', {
+      const response = await fetch('https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app//transactions/deposit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -236,7 +236,7 @@ const PatientDashboard = () => {
 
   const fetchDoctors = async () => {
     try {
-      const response = await fetch('https://hospital-management-api-1-8u27.onrender.com/doctors/', {
+      const response = await fetch('https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app//doctors/', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -259,7 +259,7 @@ const PatientDashboard = () => {
     // Simulate fetching bills from an API
     // setBills(initialBills);
     try {
-      const response = await fetch(`https://hospital-management-api-1-8u27.onrender.com/patients/${patient_id}/bills`, {
+      const response = await fetch(`https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app//patients/${patient_id}/bills`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -281,7 +281,7 @@ const PatientDashboard = () => {
     // Simulate fetching bills from an API
     // setBills(initialBills);
     try {
-      const response = await fetch(`https://hospital-management-api-1-8u27.onrender.com/patients/${patient_id}/records`, {
+      const response = await fetch(`https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app//patients/${patient_id}/records`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
