@@ -84,7 +84,7 @@ const DoctorDashboard = () => {
     subject: "Enter Subject..."
   })
 
-  const doctor_id = localStorage.getItem('user_id')
+  const doctor_id = localStorage.getItem('doctor_id')
   /** 
     *Methods Section 
   **/
@@ -778,7 +778,6 @@ const DoctorDashboard = () => {
                               <ul>
                                 <li className={`${isDarkMode ? 'text-gray-300 ml-4 mt-4' : 'text-gray-700 ml-4 mt-4'}`}>
                                   <button className="bg-blue-600 text-white px-4 py-2 rounded-lg mx-1" onClick={() => toogleUpdateAppointmentPrompt(appointment)}>Update Appointment</button>
-                                  <button className="bg-red-600 text-white px-4 py-2 rounded-lg mx-1">Delete Patient</button>
                                 </li>
                               </ul>
 

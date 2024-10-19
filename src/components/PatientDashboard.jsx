@@ -39,7 +39,7 @@ const PatientDashboard = () => {
     cost: 500
   })
 
-  const patient_id = localStorage.getItem('user_id')
+  const patient_id = localStorage.getItem('patient_id')
   
   // State for theme
   const [isDarkMode, setIsDarkMode] = useState(() => {

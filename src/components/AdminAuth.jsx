@@ -73,6 +73,14 @@ const AdminAuth = () => {
         localStorage.setItem('user_id', result.id);
         localStorage.setItem('user_role', result.role);
 
+        if(result.role == 2){
+          localStorage.setItem('doctor_id', result.doctor_id);
+          localStorage.setItem('patient_id', null);
+        } else if (result.role == 3){
+          localStorage.setItem('patient_id', result.patient_id);
+          localStorage.setItem('doctor_id', null);
+        }
+
         if(result.role == 1) {
           navigate('/admin');
         } else if(result.role == 2) {
