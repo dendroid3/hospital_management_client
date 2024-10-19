@@ -492,44 +492,45 @@ const PatientDashboard = () => {
                   <div className="mt-4">
                     <h3 className="font-semibold">Your Bills</h3>
                     {bills.length > 0 ? (
-                    
-                    <table className="min-w-full bg-white dark:bg-gray-800">
-                      <thead>
-                        <tr className="bg-gray-200 dark:bg-gray-700">
-                          <th className="py-2 px-4 border-b text-left">Date</th>
-                          <th className="py-2 px-4 border-b text-left">Description</th>
-                          <th className="py-2 px-4 border-b text-left">Amount</th>
-                          <th className="py-2 px-4 border-b text-left">Status</th>
-                          <th className="py-2 px-4 border-b text-left">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {bills.map((bill) => (
-                          <tr key={bill.id} className={`border-b text-${isDarkMode ? 'gray-300' : 'gray-600'}`}>
-                            <td className="py-2 px-4">
-                              <span>  
-                                {formatDate(bill.creation_date).date_of_day}
-                                <sup>{formatDate(bill.creation_date).date_of_day_suffix}</sup> 
-                                &nbsp;
-                                {formatDate(bill.creation_date).rest_of_date}
-                              </span>  
-                            </td> {/* Assuming creation_date holds the date */}
-                            <td className="py-2 px-4">{bill.description}</td>
-                            <td className="py-2 px-4">${bill.amount.toFixed(2)}</td>
-                            <td className="py-2 px-4">{bill.status}</td>
-                            <td className="py-2 px-4">
-                              <button
-                                disabled={bill.status == "Paid"}
-                                className={`bg-${bill.status == "Paid" ? 'gray-300' : 'green-500'} text-white px-2 py-1 rounded`}
-                                onClick={() => handlePayPill(bill)}
-                              >
-                                {bill.status == "Paid" ? "Paid" : "Pay"}
-                              </button>
-                            </td>
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full bg-white dark:bg-gray-800">
+                        <thead>
+                          <tr className="bg-gray-200 dark:bg-gray-700">
+                            <th className="py-2 px-4 border-b text-left">Date</th>
+                            <th className="py-2 px-4 border-b text-left hidden md:table-cell">Description</th> {/* Hidden on mobile */}
+                            <th className="py-2 px-4 border-b text-left">Amount</th>
+                            <th className="py-2 px-4 border-b text-left">Status</th>
+                            <th className="py-2 px-4 border-b text-left">Action</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {bills.map((bill) => (
+                            <tr key={bill.id} className={`border-b text-${isDarkMode ? 'gray-300' : 'gray-600'}`}>
+                              <td className="py-2 px-4 whitespace-nowrap">
+                                <span>  
+                                  {formatDate(bill.creation_date).date_of_day}
+                                  <sup>{formatDate(bill.creation_date).date_of_day_suffix}</sup> 
+                                  &nbsp;
+                                  {formatDate(bill.creation_date).rest_of_date}
+                                </span>  
+                              </td>
+                              <td className="py-2 px-4 hidden md:table-cell">{bill.description}</td> {/* Hidden on mobile */}
+                              <td className="py-2 px-4 whitespace-nowrap">${bill.amount.toFixed(2)}</td>
+                              <td className="py-2 px-4">{bill.status}</td>
+                              <td className="py-2 px-4">
+                                <button
+                                  disabled={bill.status == "Paid"}
+                                  className={`bg-${bill.status == "Paid" ? 'gray-300' : 'green-500'} text-white px-2 py-1 rounded`}
+                                  onClick={() => handlePayPill(bill)}
+                                >
+                                  {bill.status == "Paid" ? "Paid" : "Pay"}
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                     ) : (
                       <p className={`text-${isDarkMode ? 'gray-400' : 'gray-600'}`}>You have no bills at the moment.</p>
                     )}

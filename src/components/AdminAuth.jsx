@@ -90,10 +90,10 @@ const AdminAuth = () => {
         }
 
       } else {
-        alert("Could not ")
+        alert("Could not Login In. Ensure that your credentials are correct and try agani.")
       }
     } catch (error) {
-      alert("Could not lwertyhogin")
+        alert("Could not Login In. Ensure that your credentials are correct and try agani.")
       console.log(error)
     }
 
