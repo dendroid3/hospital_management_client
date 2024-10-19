@@ -60,9 +60,7 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Link to="/admin/auth" className="text-gray-200 hover:text-blue-400">Admin</Link>
-                <Link to="/patient/auth" className="text-gray-200 hover:text-blue-400">Patient</Link>
-                <Link to="/doctor/auth" className="text-gray-200 hover:text-blue-400">Doctor</Link>
+                <Link to="/auth" className="text-gray-200 hover:text-blue-400">Login</Link>
               </>
             )}
           </div>
