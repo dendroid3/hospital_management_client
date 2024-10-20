@@ -264,12 +264,16 @@ const AdminDashboard = () => {
 
 
   const handleLogout = () => {
+    const confirmation_message_to_logout = "You are about to logout.\nProceed?"
+    if(!confirm(confirmation_message_to_logout)){
+      return
+    }
     localStorage.setItem('access_token', null);  
     localStorage.setItem('user_id', null);
     localStorage.setItem('user_role', null);
+
     navigate("/");
   };
-
   
   const handleAddDoctor = async (e) => {
     e.preventDefault();
