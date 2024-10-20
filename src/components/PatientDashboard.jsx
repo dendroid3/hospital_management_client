@@ -118,24 +118,16 @@ const PatientDashboard = () => {
         return
       }
 
-      console.log("phone_number.length", phone_number.length  )
-
       const converted_phone_number = Number(phone_number);
-
-      console.log(converted_phone_number)
 
       if (isNaN(converted_phone_number)) {
         alert("Enter a valid Mpesa number.")
-        console.log("converted_phone_number")
-
         handlePayPill(bill)
-          return null; // or handle the error as needed
+          return null; 
       }
 
       if(phone_number.length < 9 || phone_number.length > 10){
         alert("Enter a valid Mpesa number.")
-        console.log("phone_number.length < 9 || phone_number.length > 10")
-
         handlePayPill(bill)
         return
       }
@@ -167,8 +159,6 @@ const PatientDashboard = () => {
       } else {
         alert("Could not initiate transaction, try again later.")
       }
-      
-      console.log(payment_data)
     } catch (error) {
       
     }
@@ -273,7 +263,7 @@ const PatientDashboard = () => {
         throw new Error('Failed to fetch doctors.');
       }
     } catch (error) {
-      setMessage(`Error: ${error.message}`);
+      // setMessage(`Error: ${error.message}`);
     }
   };
 
@@ -300,7 +290,9 @@ const PatientDashboard = () => {
   };
 
   const handleLogout = () => {
-    // Perform logout logic here (if needed)
+    localStorage.setItem('access_token', null);  // or username if you're saving that
+    localStorage.setItem('user_id', null);
+    localStorage.setItem('user_role', null);
     navigate("/"); // Redirect to landing page
   };
 
@@ -343,7 +335,7 @@ const PatientDashboard = () => {
           onClick={handleLogout} // Handle logout or navigate to login page
           className={`bg-blue-600 text-white px-4 py-2 rounded-lg`}
         >
-          Login
+          Logout
         </button>
       </nav>
 

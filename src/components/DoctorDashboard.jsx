@@ -94,8 +94,10 @@ const DoctorDashboard = () => {
   };
 
   const handleLogout = () => {
-    // Perform logout logic here (if needed)
-    navigate("/"); // Redirect to landing page
+    localStorage.setItem('access_token', null);  
+    localStorage.setItem('user_id', null);
+    localStorage.setItem('user_role', null);
+    navigate("/");
   };
 
   const fetchMyPatients = async () => {
@@ -422,14 +424,6 @@ const DoctorDashboard = () => {
               }`}
             >
               <FaUserInjured className="inline mr-2" /> View Patients
-            </li>
-            <li
-              onClick={() => handleActionClick("editProfile")}
-              className={`cursor-pointer mb-2 hover:underline ${
-                isDarkMode ? "text-blue-400" : "text-blue-700"
-              }`}
-            >
-              <FaUserEdit className="inline mr-2" /> Edit Profile
             </li>
           </ul>
         </div>
@@ -921,33 +915,6 @@ const DoctorDashboard = () => {
                       </div>
                     )}
 
-                  </div>
-                )}
-
-                {selectedAction === "viewRecords" && (
-                  <div className="mt-4">
-                    <h3 className={isDarkMode ? "font-semibold text-white" : "font-semibold text-gray-900"}>Patient Records</h3>
-                    <button className="bg-blue-600 text-white px-4 py-2 rounded-lg mt-4">
-                      View Records
-                    </button>
-                  </div>
-                )}
-
-                {selectedAction === "editProfile" && (
-                  <div className="mt-4">
-                    <h3 className={isDarkMode ? "font-semibold text-white" : "font-semibold text-gray-900"}>Edit Profile</h3>
-                    <input
-                      type="text"
-                      placeholder="Doctor Name"
-                      className={`p-2 border rounded mb-2 w-full ${
-                        isDarkMode
-                          ? "border-gray-600 bg-gray-700 text-white"
-                          : "border-gray-400 bg-gray-200 text-gray-900"
-                      }`}
-                    />
-                    <button className="bg-blue-600 text-white px-4 py-2 rounded-lg">
-                      Update Profile
-                    </button>
                   </div>
                 )}
 

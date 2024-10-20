@@ -264,7 +264,10 @@ const AdminDashboard = () => {
 
 
   const handleLogout = () => {
-    navigate("/"); // Redirect to landing page
+    localStorage.setItem('access_token', null);  
+    localStorage.setItem('user_id', null);
+    localStorage.setItem('user_role', null);
+    navigate("/");
   };
 
   
