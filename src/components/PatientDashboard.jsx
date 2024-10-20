@@ -58,7 +58,7 @@ const PatientDashboard = () => {
   const handleAddAppointment = async () => {
     try {
       const data = {
-        patient_id: 1,
+        patient_id: patient_id,
         doctor_id: newAppointmentDetail.doctor_id,
         reason_for_visit: newAppointmentDetail.reason_for_visit,
         cost: newAppointmentDetail.cost,
@@ -288,7 +288,7 @@ const PatientDashboard = () => {
       // setMessage(`Error: ${error.message}`);
     }
   };
-  
+
   const handleLogout = () => {
     const confirmation_message_to_logout = "You are about to logout.\nProceed?"
     if(!confirm(confirmation_message_to_logout)){
