@@ -107,7 +107,7 @@ const DoctorDashboard = () => {
 
   const fetchMyPatients = async () => {
     try {
-      const response = await fetch(`https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app/doctors/patients/${doctor_id}`, {
+      const response = await fetch(`https://mere-mavis-wakulima-9f4fea97.koyeb.app/doctors/patients/${doctor_id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ const DoctorDashboard = () => {
 
   const fetchMyAppointments = async () => {
     try {
-      const response = await fetch(`https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app/appointments/doctor/${doctor_id}`, {
+      const response = await fetch(`https://mere-mavis-wakulima-9f4fea97.koyeb.app/appointments/doctor/${doctor_id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -150,7 +150,7 @@ const DoctorDashboard = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app/appointments/${doctor_id}`, {
+      const response = await fetch(`https://mere-mavis-wakulima-9f4fea97.koyeb.app/appointments/${doctor_id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ const DoctorDashboard = () => {
     record_data.patient_id = patientGettingRecordAdded.id
     console.log("recordToBeAdded", record_data)
     try {
-      const response = await fetch('https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app/records/', {
+      const response = await fetch('https://mere-mavis-wakulima-9f4fea97.koyeb.app/records/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -239,7 +239,7 @@ const DoctorDashboard = () => {
         "description": bill_description
       }
 
-      const response = await fetch('https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app/bills/', {
+      const response = await fetch('https://mere-mavis-wakulima-9f4fea97.koyeb.app/bills/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

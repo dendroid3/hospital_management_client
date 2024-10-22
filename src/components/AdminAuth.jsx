@@ -50,7 +50,7 @@ const AdminAuth = () => {
 
       console.log(login_data)
       
-      const url = isLogin ? 'https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app//auth/login' : 'https://geographical-euphemia-wazo-tank-f4308d3f.koyeb.app//auth/register'
+      const url = isLogin ? 'https://mere-mavis-wakulima-9f4fea97.koyeb.app//auth/login' : 'https://mere-mavis-wakulima-9f4fea97.koyeb.app//auth/register'
       const response = await fetch(url, {
         method: 'POST',
         headers: {
